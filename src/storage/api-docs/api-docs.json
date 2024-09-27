@@ -421,6 +421,142 @@
                 ]
             }
         },
+        "/api/stock/in": {
+            "post": {
+                "tags": [
+                    "Stock"
+                ],
+                "summary": "Stock In",
+                "operationId": "ca8b69bff10bfc7edbcd91ec4aef5643",
+                "requestBody": {
+                    "description": "All Request Body For Stock in",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "product_code": {
+                                        "type": "string",
+                                        "example": ""
+                                    },
+                                    "qty": {
+                                        "type": "integer",
+                                        "example": "0"
+                                    },
+                                    "suplier_id": {
+                                        "type": "integer",
+                                        "example": ""
+                                    },
+                                    "date_in": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2024-09-26"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Values",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/stock/out": {
+            "post": {
+                "tags": [
+                    "Stock"
+                ],
+                "summary": "Stock Out",
+                "operationId": "3fa7336cd8156cf39be4106d24a33374",
+                "requestBody": {
+                    "description": "All Request Body For Stock Out",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "product_code": {
+                                        "type": "string",
+                                        "example": ""
+                                    },
+                                    "qty": {
+                                        "type": "integer",
+                                        "example": "0"
+                                    },
+                                    "date_out": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": ""
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Values",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/suplier/create": {
             "post": {
                 "tags": [
@@ -750,6 +886,10 @@
         {
             "name": "Profile",
             "description": "Profile"
+        },
+        {
+            "name": "Stock",
+            "description": "Stock"
         },
         {
             "name": "Suplier",

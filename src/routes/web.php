@@ -8,6 +8,7 @@ include 'user.php';
 include 'profile.php';
 include 'product.php';
 include 'suplier.php';
+include 'stock.php';
 
 Route::get('/', function () {
     return view('welcome');

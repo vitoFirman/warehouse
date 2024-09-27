@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('code', 10);
             $table->string('name', 255);
-            $table->integer('price');
+            $table->integer('unite_price');
             $table->integer('stock')->default(0);
             $table->timestamps();
         });

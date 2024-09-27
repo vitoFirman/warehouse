@@ -34,6 +34,7 @@ class Info extends Controller
 {
     public function __invoke()
     {
+        $id = Auth::user()->id;
         $profile = UserProfile::where('userid', Auth::user()->id)->first();
         return $profile;
     }
