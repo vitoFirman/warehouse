@@ -17,4 +17,9 @@ class UserProfile extends Model
         'city',
         'photo',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'userid');
+    }
 }

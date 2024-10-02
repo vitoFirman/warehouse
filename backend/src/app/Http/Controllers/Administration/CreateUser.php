@@ -93,7 +93,6 @@ class CreateUser extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
             'confirm_password' => 'required|same:password',
-            'role' => 'required',
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'address' => 'required|string',
@@ -118,7 +117,7 @@ class CreateUser extends Controller
             ]);
             return response()->json([
                 'status' => 200,
-                'message' => 'Success',
+                'message' => 'Add User Successfully',
                 'data' => $user
             ]);
         }

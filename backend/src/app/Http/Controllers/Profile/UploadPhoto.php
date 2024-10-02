@@ -56,7 +56,7 @@ class UploadPhoto extends Controller
         $file = $request->file('photo');
         $path = public_path('Uploads/Profile/Photo/');
         $ext = $file->getClientOriginalExtension();
-        $fileName = md5($id . '-' . now() . '.' . $ext);
+        $fileName = md5($id . '-' . now() . '.') . $ext;
         $file->move($path, $fileName);
         if ($profile->image) {
             if (File::exists($profile->image)) File::delete($profile->image);

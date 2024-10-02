@@ -73,7 +73,7 @@ class StockIn extends Controller
         ]);
         $dataInput = $request->all();
         $product = Product::where('code', $dataInput['product_code'])->first();
-        $suplier = Suplier::where('id', $dataInput['suplier->id'])->first();
+        $suplier = Suplier::where('id', $dataInput['suplier_id'])->first();
         if (!$product) {
             return response()->json([
                 'status' => 404,

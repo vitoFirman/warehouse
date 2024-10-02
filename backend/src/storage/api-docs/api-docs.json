@@ -95,6 +95,97 @@
                 ]
             }
         },
+        "/api/administration/user/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Administration"
+                ],
+                "summary": "Delete User",
+                "operationId": "ab864d0775ba1d85b3962bfe19f9adc4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id For User",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Values",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/administration/user/list": {
+            "get": {
+                "tags": [
+                    "Administration"
+                ],
+                "summary": "User List",
+                "operationId": "cbad5bd3f74132472fc3991c11878e7c",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Values",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/auth/login": {
             "post": {
                 "tags": [
@@ -150,6 +241,46 @@
                     }
                 },
                 "security": []
+            }
+        },
+        "/api/auth/logout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Logout User",
+                "operationId": "89184aefc8e7e77dc27884f5a0359ba7",
+                "responses": {
+                    "200": {
+                        "description": "Success Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Values",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/product/create": {
@@ -491,6 +622,46 @@
                 ]
             }
         },
+        "/api/stock/in/list": {
+            "get": {
+                "tags": [
+                    "Stock"
+                ],
+                "summary": "Stock in list",
+                "operationId": "3f4aee3beb1f4ddf6ccb4cc69d3993ab",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Values",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/stock/out": {
             "post": {
                 "tags": [
@@ -527,6 +698,46 @@
                 "responses": {
                     "200": {
                         "description": "Success Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Values",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/stock/out/list": {
+            "get": {
+                "tags": [
+                    "Stock"
+                ],
+                "summary": "Stock out list",
+                "operationId": "0db46c92355dc993cb4c5cbc5e08422e",
+                "responses": {
+                    "200": {
+                        "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {}
