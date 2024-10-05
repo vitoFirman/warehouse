@@ -1,14 +1,23 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const productList = createAsyncThunk('productList', async () => {
+export const productList = createAsyncThunk('productList', async (page = null) => {
     const token = localStorage.getItem('token')
-    const res = await axios.get('http://localhost:3000/api/product/list', {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    })
-    return res.data
+    if(page) {
+        const res = await axios.get(`https://inventory.vito.web.id/api/product/list/paginate?page=${page}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        return res.data
+    } else {
+        const res = await axios.get(`https://inventory.vito.web.id/api/product/list`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        return res.data
+    }
 })
 
 export const productSlice = createSlice({

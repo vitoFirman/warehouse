@@ -1,5 +1,6 @@
-import { Flowbite, useThemeMode } from 'flowbite-react'
+import './assets/js/flowbite'
 import 'flowbite'
+import { Flowbite, useThemeMode } from 'flowbite-react'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './index.css'
 import Login from './Pages/Auth/Login'
@@ -11,12 +12,10 @@ import UpdatePassword from './Pages/Admin/UpdatePassword';
 import StockIn from './Pages/Stock/StockIn';
 import StockOut from './Pages/Stock/StockOut';
 import ProductList from './Pages/Product/ProductList';
-import FooterComponent from './Components/Footer';
 import SupplierList from './Pages/Supplier/SupplierList';
 
 function App() {
   const mode = useThemeMode()
-
   return (
     <>
       <Flowbite>
@@ -35,7 +34,6 @@ function App() {
               <Route path='/stock/out' element={<StockOut/>}/>
             </Routes>
           </Router>
-        <FooterComponent/>
         </div>
       </Flowbite>
     </>

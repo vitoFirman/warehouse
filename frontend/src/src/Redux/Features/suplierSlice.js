@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const supplierList = createAsyncThunk('supplierList', async () => {
     const token = localStorage.getItem('token')
-    const res = await axios.get('http://localhost:3000/api/suplier/list', {
+    const res = await axios.get('https://inventory.vito.web.id/api/suplier/list', {
         headers: {
             Authorization: `Bearer ${token}`
         }

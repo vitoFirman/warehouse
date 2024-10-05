@@ -1,12 +1,13 @@
-import { Breadcrumb, Table, Tooltip, useThemeMode } from "flowbite-react"
+import { Breadcrumb, Pagination, Table, Tooltip, useThemeMode } from "flowbite-react"
 import NavbarComponent from "../../Components/Navbar"
 import SidebarComponent from "../../Components/Sidebar"
 import { HiChartPie } from "react-icons/hi"
 import { useNavigate } from "react-router-dom"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { productList } from "../../Redux/Features/productSlice"
 import { FaRegEdit, FaRegTrashAlt } from "react-icons/fa"
+import ModalAddProduct from "./ModalAddProduct"
 
 const ProductList = () => {
     const mode = useThemeMode()
@@ -14,17 +15,28 @@ const ProductList = () => {
     const dispatch = useDispatch()
     let product = useSelector(state => state.product.data)
     const loading = useSelector(state => state.product.loading)
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = product?.per_page
+
     useEffect(() => {
         document.title = 'Product List'
         const token = localStorage.getItem('token')
         if(!token) {
             navigate('/')
         } else {
-            dispatch(productList())
+            dispatch(productList(currentPage))
         }
-    }, [navigate, dispatch])
+    }, [navigate, dispatch, currentPage])
+
+    const onPageChange = (page) => {
+        setCurrentPage(page)
+        dispatch(productList(page))
+    };
+
+    const startIndex = (currentPage - 1) * itemsPerPage;
+
     return (
-        <div className="h-screen md:min-h-screen">
+        <div className="min-h-screen">
             <NavbarComponent/>
             <SidebarComponent/>
             <div className="p-4 sm:ml-64 mt-16 md:px-12">
@@ -35,6 +47,11 @@ const ProductList = () => {
                 <Breadcrumb.Item href="#">Product</Breadcrumb.Item>
                 <Breadcrumb.Item>List</Breadcrumb.Item>
             </Breadcrumb>
+            {/* <!-- Modal toggle --> */}
+            <button data-modal-target="crud-modal" data-modal-toggle="crud-modal" className="block my-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                Add Product
+            </button>
+            <ModalAddProduct/>
             <div className="overflow-x-auto">
                 <Table>
                     <Table.Head>
@@ -59,10 +76,10 @@ const ProductList = () => {
                                 </Table.Cell>
                             </Table.Row>
                         ) : (
-                            product.map((product, index) => (
+                            product?.data?.map((product, index) => (
                                 <Table.Row key={product.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
                                     <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                        {index + 1}
+                                        {startIndex + index + 1}
                                     </Table.Cell>
                                     <Table.Cell>{product.code}</Table.Cell>
                                     <Table.Cell>{product.name}</Table.Cell>
@@ -85,6 +102,9 @@ const ProductList = () => {
                         )}
                     </Table.Body>
                 </Table>
+                </div>
+                <div className="flex my-5 overflow-x-auto sm:justify-start">
+                    <Pagination currentPage={currentPage} totalPages={product.last_page ? product.last_page : 1} onPageChange={onPageChange} />
                 </div>
             </div>
         </div>

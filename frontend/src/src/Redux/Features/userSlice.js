@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export const fetchUser = createAsyncThunk('fetchUser', async () => {
     const token = localStorage.getItem('token')
-    const res = await axios.get('http://localhost:3000/api/user/info', {
+    const res = await axios.get('https://inventory.vito.web.id/api/user/info', {
         headers: {
             Authorization: `Bearer ${token}`
         }
@@ -13,7 +13,7 @@ export const fetchUser = createAsyncThunk('fetchUser', async () => {
 
 export const userList = createAsyncThunk('userList', async () => {
     const token = localStorage.getItem('token')
-    const res = await axios.get('http://localhost:3000/api/administration/user/list', {
+    const res = await axios.get('https://inventory.vito.web.id/api/administration/user/list', {
         headers: {
             Authorization: `Bearer ${token}`
         }

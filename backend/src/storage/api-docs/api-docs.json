@@ -301,7 +301,7 @@
                                         "type": "string",
                                         "example": "indomie"
                                     },
-                                    "price": {
+                                    "unite_price": {
                                         "type": "integer",
                                         "example": "3000"
                                     }
@@ -350,7 +350,47 @@
                     "Product"
                 ],
                 "summary": "Product List",
-                "operationId": "9f367237b3429c9f227aa2eecac9b971",
+                "operationId": "51441480e24012c6c9ec649d5b15ad78",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Values",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/product/list/paginate": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Product List paginate",
+                "operationId": "14bddd53e437fd13ad553a45c19af520",
                 "responses": {
                     "200": {
                         "description": "Success",

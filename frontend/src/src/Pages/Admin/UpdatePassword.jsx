@@ -26,6 +26,8 @@ const UpdatePassword = () => {
                 <Breadcrumb.Item href="#">Administration</Breadcrumb.Item>
                 <Breadcrumb.Item>Update Password</Breadcrumb.Item>
             </Breadcrumb>
+            <div>
+            </div>
             </div>
         </div>
     )

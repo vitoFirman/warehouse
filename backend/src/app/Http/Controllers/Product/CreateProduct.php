@@ -25,7 +25,7 @@ use Illuminate\Support\Str;
  *             example="indomie"
  *           ),
  *           @OA\Property(
- *             property="price",
+ *             property="unite_price",
  *             type="integer",
  *             example="3000"
  *           )
@@ -55,7 +55,7 @@ class CreateProduct extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            'price' => 'required',
+            'unite_price' => 'required|numeric',
         ]);
         $dataInput = $request->all();
         do {
@@ -65,7 +65,7 @@ class CreateProduct extends Controller
         Product::create([
             'code' => $code,
             'name' => $dataInput['name'],
-            'price' => $dataInput['price'],
+            'unite_price' => $dataInput['unite_price'],
             'stock' => 0
         ]);
         return response()->json([

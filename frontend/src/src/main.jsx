@@ -2,6 +2,8 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
+import './assets/js/flowbite'
+import 'flowbite'
 import {Provider} from 'react-redux'
 import store from './Redux/Store/store.js'
 

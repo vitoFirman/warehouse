@@ -40,8 +40,8 @@ const ProductList = () => {
                     <Table.Head>
                     <Table.HeadCell>No</Table.HeadCell>
                     <Table.HeadCell>Product Code</Table.HeadCell>
-                    <Table.HeadCell>Quantity</Table.HeadCell>
                     <Table.HeadCell>Supplier ID</Table.HeadCell>
+                    <Table.HeadCell>Quantity</Table.HeadCell>
                     <Table.HeadCell>Date In</Table.HeadCell>
                     <Table.HeadCell>Action</Table.HeadCell>
                     </Table.Head>

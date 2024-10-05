@@ -14,7 +14,6 @@ import { FaCartArrowDown, FaCartPlus, FaShop, FaTruck } from "react-icons/fa6";
 
 const SidebarComponent = () => {
     const navigate = useNavigate()
-
     const dispatch = useDispatch()
     
     const user = useSelector(state => state.user.fetchUser.data)
@@ -30,6 +29,7 @@ const SidebarComponent = () => {
 
     const path = useLocation().pathname
     return (
+        <>
         <aside id="logo-sidebar" className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
             <Sidebar aria-label="Sidebar with multi-level dropdown example">
             <Sidebar.Items>
@@ -57,6 +57,7 @@ const SidebarComponent = () => {
             </Sidebar.Items>
             </Sidebar>
         </aside>
+        </>
     )
 }
 

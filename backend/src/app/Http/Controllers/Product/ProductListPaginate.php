@@ -8,8 +8,8 @@ use App\Models\Product;
 
 /**
  * @OA\Get(
- *   path="/api/product/list",
- *   summary="Product List",
+ *   path="/api/product/list/paginate",
+ *   summary="Product List paginate",
  *   tags={"Product"},
  *   security={{"bearerAuth": {}}},
  *   @OA\Response(
@@ -29,11 +29,11 @@ use App\Models\Product;
  *   )
  * )
  */
-class ProductList extends Controller
+class ProductListPaginate extends Controller
 {
     public function __invoke()
     {
-        $product = Product::all();
+        $product = Product::paginate(6);
         return $product;
     }
 }

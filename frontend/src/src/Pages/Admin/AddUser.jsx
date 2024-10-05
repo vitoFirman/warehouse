@@ -44,11 +44,10 @@ const AddUser = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(formData.role);
         setLoading(true)
         try {
             const token = localStorage.getItem('token')
-            const res = await axios.post('http://localhost:3000/api/administration/user/create', formData, {
+            const res = await axios.post('https://inventory.vito.web.id/api/administration/user/create', formData, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -157,7 +156,7 @@ const AddUser = () => {
                             {error?.errors?.confirm_password && <><span className="text-red-600 text-xs">{error?.errors?.confirm_password[0]}</span></>}
                         </div>
                     </div>
-                    <Button type="submit" className="mt-4">{loading ? (<><Spinner color="warning" aria-label="Success spinner example" /></>) : 'Submit'}</Button>
+                    <Button type="submit" color={'blue'} className="mt-4">{loading ? (<><Spinner color="warning" aria-label="Success spinner example" /></>) : 'Submit'}</Button>
                 </form>
                 </Card>
             </div>

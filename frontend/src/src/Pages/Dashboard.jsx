@@ -1,34 +1,38 @@
 import { useDispatch, useSelector } from "react-redux";
 import NavbarComponent from "../Components/Navbar"
-import SidebarComponent from "../Components/Sidebar"
 import { FaCartArrowDown, FaCartPlus, FaShoppingBag, FaUserTie } from "react-icons/fa";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { userList } from "../Redux/Features/userSlice";
 import { productList } from "../Redux/Features/productSlice";
 import { Button, Table } from "flowbite-react";
+import { stockIn, stockOut } from "../Redux/Features/stockSlice";
+import { supplierList } from "../Redux/Features/suplierSlice";
 
 const Dashboard = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const users = useSelector(state => state.user.userList.data)
+    const supplier = useSelector(state => state.supplier.data)
     const product = useSelector(state => state.product.data)
     const loading = useSelector(state => state.product.loading)
+    const stockInList = useSelector(state => state.stock.stockIn.data)
+    const stockOutList = useSelector(state => state.stock.stockOut.data)
+
     useEffect(() => {
         document.title = 'Warehouse | Dashboard'
         const token = localStorage.getItem('token')
         if(!token) {
             navigate('/')
         } else {
-            dispatch(userList())
+            dispatch(supplierList())
             dispatch(productList())
+            dispatch(stockIn())
+            dispatch(stockOut())
         }
     }, [dispatch, navigate])
 
     return (
         <div className="min-h-screen">
             <NavbarComponent/>
-            <SidebarComponent/>
             <div className="p-4 sm:ml-64">
             <div className="mt-16">
             <div className="flex flex-col items-center sm:grid sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-4">
@@ -41,7 +45,7 @@ const Dashboard = () => {
                         <FaUserTie />
                         </small>
                         <p className="text-5xl ms-auto mt-6">
-                            {users?.length + 1}
+                            {supplier?.length}
                         </p>
                     </div>
                 </a>
@@ -54,7 +58,7 @@ const Dashboard = () => {
                         <FaShoppingBag />
                         </small>
                         <p className="text-5xl ms-auto mt-6">
-                            {product.length}
+                            {product?.length}
                         </p>
                     </div>
                 </a>
@@ -67,7 +71,7 @@ const Dashboard = () => {
                         <FaCartPlus />
                         </small>
                         <p className="text-5xl ms-auto mt-6">
-                            5
+                            {stockInList.length}
                         </p>
                     </div>
                 </a>
@@ -80,13 +84,13 @@ const Dashboard = () => {
                         <FaCartArrowDown />
                         </small>
                         <p className="text-5xl ms-auto mt-6">
-                            5
+                            {stockOutList.length}
                         </p>
                     </div>
                 </a>
             </div>
+                <div className="overflow-x-auto md:px-10">
                 <h2 className="dark:text-white text-3xl mt-16 mb-4">Product yang Stock nya di bawah 5</h2>
-                <div className="overflow-x-auto">
                 <Table>
                     <Table.Head>
                     <Table.HeadCell>No</Table.HeadCell>
@@ -110,7 +114,7 @@ const Dashboard = () => {
                                 </Table.Cell>
                             </Table.Row>
                         ) : (
-                            product.filter(item => item.stock < 5).map((product, index) => (
+                            product?.filter(item => item.stock < 5).map((product, index) => (
                                 <Table.Row key={product.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
                                     <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                         {index + 1}

@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const stockIn = createAsyncThunk('stockIn', async () => {
     const token = localStorage.getItem('token')
-    const res = await axios.get('http://localhost:3000/api/stock/in/list', {
+    const res = await axios.get('https://inventory.vito.web.id/api/stock/in/list', {
         headers: {
             Authorization: `Bearer ${token}`
         }
@@ -13,7 +13,7 @@ export const stockIn = createAsyncThunk('stockIn', async () => {
 
 export const stockOut = createAsyncThunk('stockOut', async () => {
     const token = localStorage.getItem('token')
-    const res = await axios.get('http://localhost:3000/api/stock/out/list', {
+    const res = await axios.get('https://inventory.vito.web.id/api/stock/out/list', {
         headers: {
             Authorization: `Bearer ${token}`
         }

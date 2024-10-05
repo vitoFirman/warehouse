@@ -1,11 +1,11 @@
-import { Breadcrumb, Table, Tooltip, useThemeMode } from "flowbite-react"
+import { Breadcrumb, Button, Table, Tooltip, useThemeMode } from "flowbite-react"
 import NavbarComponent from "../../Components/Navbar"
 import SidebarComponent from "../../Components/Sidebar"
 import { FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
 import { HiChartPie } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { userList } from "../../Redux/Features/userSlice";
 import Swal from 'sweetalert2';
 import axios from "axios";
@@ -42,7 +42,7 @@ const ListUser = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 const token = localStorage.getItem('token')
-                    const res = await axios.delete(`http://localhost:3000/api/administration/user/delete/${id}`, {
+                    const res = await axios.delete(`https://inventory.vito.web.id/api/administration/user/delete/${id}`, {
                         headers: {
                             Authorization: `Bearer ${token}`
                         }
@@ -89,6 +89,7 @@ const ListUser = () => {
                 <Breadcrumb.Item href="#">Administration</Breadcrumb.Item>
                 <Breadcrumb.Item>List User</Breadcrumb.Item>
             </Breadcrumb>
+            <Button size={'sm'} color={'blue'} className="mb-3"><Link to={'/administration/add-user'}>Add User</Link></Button>
             <div className="overflow-x-auto">
                 <Table>
                     <Table.Head>

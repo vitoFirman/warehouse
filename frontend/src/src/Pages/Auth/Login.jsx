@@ -2,7 +2,7 @@ import { Alert, Button, Card, Spinner, TextInput, useThemeMode } from "flowbite-
 import { useEffect, useState } from "react";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
-import loginBg from '../../assets/bg.jpg'
+import loginBg from '../../assets/image/bg.jpg'
 
 
 const Login = () => {
@@ -26,15 +26,18 @@ const Login = () => {
         e.preventDefault()
         setLoading(true)
         try {
-            const res = await axios.post('http://localhost:3000/api/auth/login', formData)
+            const res = await axios.post('https://inventory.vito.web.id/api/auth/login', formData)
             const token = res.data.token
             localStorage.setItem('token', token)
             navigate('/dashboard')
         } catch (error) {
             if(error.response.data.status) {
                 setError(error.response.data.message)
+                setValidationError(null)
+            } else {
+                setValidationError(error.response.data)
+                setError(null)
             }
-            setValidationError(error.response.data)
         } finally {
             setLoading(false)
         }
@@ -60,13 +63,13 @@ const Login = () => {
                     }
                     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                         <div>
-                            <label htmlFor="username" className={`text-sm ${validationError?.errors?.username ? 'text-red-600 ' : mode.mode === 'dark' ? 'text-white' : 'text-black'}`}>username</label>
-                            <TextInput className="md:w-[450px]" value={formData.username} id="username" type="text" color={validationError?.errors?.username ? 'failure' : 'gray'} onChange={(e) => setFormData({...formData, username: e.target.value})}/>
+                            <label htmlFor="username" className={`text-sm mb-2 block ${validationError?.errors?.username ? 'text-red-600 ' : mode.mode === 'dark' ? 'text-white' : 'text-black'}`}>username</label>
+                            <TextInput className="md:w-[450px] mb-1" value={formData.username} id="username" type="text" color={validationError?.errors?.username ? 'failure' : 'gray'} onChange={(e) => setFormData({...formData, username: e.target.value})}/>
                             {validationError?.errors?.username && <><span className="text-red-600 text-xs">{validationError?.errors?.username[0]}</span></>}
                         </div>
                         <div>
-                            <label htmlFor="password" className={`text-sm ${validationError?.errors?.password ? 'text-red-600 ' : mode.mode === 'dark' ? 'text-white' : 'text-black'}`}>password</label>
-                            <TextInput className="md:w-[450px] mb-2" value={formData.password} id="password" type="password" color={validationError?.errors?.password ? 'failure' : 'gray'} onChange={(e) => setFormData({...formData, password: e.target.value})}/>
+                            <label htmlFor="password" className={`text-sm mb-2 block ${validationError?.errors?.password ? 'text-red-600 ' : mode.mode === 'dark' ? 'text-white' : 'text-black'}`}>password</label>
+                            <TextInput className="md:w-[450px] mb-1" value={formData.password} id="password" type="password" color={validationError?.errors?.password ? 'failure' : 'gray'} onChange={(e) => setFormData({...formData, password: e.target.value})}/>
                             {validationError?.errors?.password && <><span className="text-red-600 text-xs">{validationError?.errors?.password[0]}</span></>}
                         </div>
                         <Button type="submit">{loading ? (<><Spinner color="warning" aria-label="Success spinner example" /></>) : 'Login'}</Button>
