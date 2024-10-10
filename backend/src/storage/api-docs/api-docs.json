@@ -6,6 +6,74 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/administration/change-role/{id}": {
+            "post": {
+                "tags": [
+                    "Administration"
+                ],
+                "summary": "Change Role",
+                "operationId": "3140211c054baf0fa48cb1d1d83a99de",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id For User",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "All Request Body For User",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "role": {
+                                        "type": "string",
+                                        "example": ""
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Values",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/administration/user/create": {
             "post": {
                 "tags": [
@@ -425,12 +493,12 @@
             }
         },
         "/api/product/update/{code}": {
-            "post": {
+            "put": {
                 "tags": [
                     "Product"
                 ],
                 "summary": "Update Product",
-                "operationId": "a9a298631d581c18ebf9e1a89d39e611",
+                "operationId": "88a672c0fdb319998fdbe2d359893f74",
                 "parameters": [
                     {
                         "name": "code",
@@ -514,6 +582,75 @@
                     },
                     "400": {
                         "description": "Invalid Values",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/profile/update": {
+            "put": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Update Profile",
+                "operationId": "d77fd76ab54fc4f7ae0bf778f2409f62",
+                "requestBody": {
+                    "description": "All Request Body For Profile",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "first_name": {
+                                        "type": "string",
+                                        "example": "John"
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "example": "Doe"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Jl diponegoro no 41"
+                                    },
+                                    "city": {
+                                        "type": "string",
+                                        "example": "Jember"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success Update",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Username Or Password",
                         "content": {
                             "application/json": {
                                 "schema": {}
@@ -1067,7 +1204,7 @@
                                         "type": "string",
                                         "example": ""
                                     },
-                                    "new_password_confirmation": {
+                                    "confirm_password": {
                                         "type": "string",
                                         "example": ""
                                     }

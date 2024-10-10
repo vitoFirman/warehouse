@@ -1,31 +1,90 @@
-import { Breadcrumb } from "flowbite-react"
+import { Breadcrumb, Button, Spinner, Table } from "flowbite-react"
 import NavbarComponent from "../../Components/Navbar"
-import SidebarComponent from "../../Components/Sidebar"
 import { HiChartPie } from "react-icons/hi"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { userList } from "../../Redux/Features/userSlice"
+import ModalChangeRole from "../../Components/Modal/ModalChangeRole"
 
 const ChangeRole = () => {
+    const dispatch = useDispatch()
+    let users = useSelector(state => state.user.userList.data)
+    const loading = useSelector(state => state.user.userList.loading)
     const navigate = useNavigate()
     useEffect(() => {
         document.title = 'Change Role'
         const token = localStorage.getItem('token')
         if(!token) {
             navigate('/')
+        } else {
+            dispatch(userList())
         }
-    })
+    }, [navigate, dispatch])
+
+    const [userid, setUserid] = useState(null)
+    const [open, setOpen] = useState(false)
+
+    const clickModal = (userid) => {
+        setOpen(true)
+        setUserid(userid)
+    }
+
+
     return (
         <div className="min-h-screen">
             <NavbarComponent/>
-            <SidebarComponent/>
-            <div className="p-4 sm:ml-64 mt-16 md:px-12">
-            <Breadcrumb aria-label="Solid background breadcrumb example" className="my-4 rounded-none max-w-max">
-                <Breadcrumb.Item href="#" icon={HiChartPie}>
-                    Dashboard
-                </Breadcrumb.Item>
-                <Breadcrumb.Item href="#">Administration</Breadcrumb.Item>
-                <Breadcrumb.Item>Change Role</Breadcrumb.Item>
-            </Breadcrumb>
+            <div className="p-4 sm:ml-64">
+                <div className="mt-20">
+                <Breadcrumb aria-label="Solid background breadcrumb example" className="my-4 rounded-none max-w-max">
+                    <Breadcrumb.Item href="#" icon={HiChartPie}>
+                        Dashboard
+                    </Breadcrumb.Item>
+                    <Breadcrumb.Item href="#">Administration</Breadcrumb.Item>
+                    <Breadcrumb.Item>Change Role</Breadcrumb.Item>
+                </Breadcrumb>
+                <div className="overflow-x-auto">
+                    <Table>
+                        <Table.Head>
+                        <Table.HeadCell>No</Table.HeadCell>
+                        <Table.HeadCell>Username</Table.HeadCell>
+                        <Table.HeadCell>Role</Table.HeadCell>
+                        <Table.HeadCell>Action</Table.HeadCell>
+                        </Table.Head>
+                        <Table.Body className="divide-y">
+                            {
+                                loading ? (
+                                    <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                                        <Table.Cell colSpan={4} className="text-center py-4 text-gray-500 dark:text-gray-400">
+                                        <div role="status">
+                                            <Spinner size={'xl'}/>
+                                        </div>
+                                        </Table.Cell>
+                                    </Table.Row>
+                                ) : (
+                                    users.map((user, index) => (
+                                        <Table.Row key={user.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                                            <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                            {index + 1}
+                                            </Table.Cell>
+                                            <Table.Cell>{user.name}</Table.Cell>
+                                            <Table.Cell>
+                                                {user.role}
+                                            </Table.Cell>
+                                            <Table.Cell>
+                                                <button onClick={() => clickModal(user.id)} className="text-blue-600 dark:text-blue-500 text-2xl">
+                                                    <Button color={'blue'} size={'xs'}>Change</Button>
+                                                </button>
+                                            </Table.Cell>
+                                        </Table.Row>
+                                    ))
+                                )
+                            }
+                        </Table.Body>
+                    </Table>
+                        <ModalChangeRole open={open} setOpen={setOpen} userid={userid}/>
+                    </div>
+                </div>
             </div>
         </div>
     )

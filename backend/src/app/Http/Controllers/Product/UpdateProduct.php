@@ -7,7 +7,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 
 /**
- * @OA\Post(
+ * @OA\Put(
  *   path="/api/product/update/{code}",
  *   summary="Update Product",
  *   tags={"Product"},

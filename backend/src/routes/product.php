@@ -10,5 +10,5 @@ Route::prefix('api/product')->group(function () {
     Route::get('/list/paginate', ProductListPaginate::class)->middleware('auth:sanctum', 'ability:manage-stock');
     Route::get('/list', ProductListAll::class)->middleware('auth:sanctum', 'ability:manage-stock');
     Route::post('/create', CreateProduct::class)->middleware('auth:sanctum', 'ability:manage-stock');
-    Route::post('/update/{code}', UpdateProduct::class)->middleware('auth:sanctum', 'ability:manage-stock');
+    Route::put('/update/{code}', UpdateProduct::class)->middleware('auth:sanctum', 'ability:manage-stock');
 });

@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { baseUrl } from "../../Config/Axios";
 
 export const stockIn = createAsyncThunk('stockIn', async () => {
     const token = localStorage.getItem('token')
-    const res = await axios.get('https://inventory.vito.web.id/api/stock/in/list', {
+    const res = await axios.get(`${baseUrl}/stock/in/list`, {
         headers: {
             Authorization: `Bearer ${token}`
         }
@@ -13,7 +14,7 @@ export const stockIn = createAsyncThunk('stockIn', async () => {
 
 export const stockOut = createAsyncThunk('stockOut', async () => {
     const token = localStorage.getItem('token')
-    const res = await axios.get('https://inventory.vito.web.id/api/stock/out/list', {
+    const res = await axios.get(`${baseUrl}/stock/out/list`, {
         headers: {
             Authorization: `Bearer ${token}`
         }

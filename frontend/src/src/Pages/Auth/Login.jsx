@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 import loginBg from '../../assets/image/bg.jpg'
+import { baseUrl } from "../../Config/Axios";
 
 
 const Login = () => {
@@ -26,7 +27,7 @@ const Login = () => {
         e.preventDefault()
         setLoading(true)
         try {
-            const res = await axios.post('https://inventory.vito.web.id/api/auth/login', formData)
+            const res = await axios.post(`${baseUrl}/auth/login`, formData)
             const token = res.data.token
             localStorage.setItem('token', token)
             navigate('/dashboard')
@@ -47,8 +48,8 @@ const Login = () => {
     
     return (
         <section className="min-h-screen" style={style}>
-            <div className="flex justify-center items-center">
-                <Card className="mt-20">
+            <div className="flex justify-center px-4">
+                <Card className="mt-20 w-full md:max-w-max">
                     <a href="https://flowbite.com/" className="flex items-center justify-center space-x-3 rtl:space-x-reverse my-3">
                         <img src="https://flowbite.com/docs/images/logo.svg" className="h-10 w-10 md:h-14 md:w-14" alt="Flowbite Logo" />
                         <span className="self-center text-3xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>

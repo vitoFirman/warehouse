@@ -89,7 +89,7 @@ const Dashboard = () => {
                     </div>
                 </a>
             </div>
-                <div className="overflow-x-auto md:px-10">
+                <div className="overflow-x-auto">
                 <h2 className="dark:text-white text-3xl mt-16 mb-4">Product yang Stock nya di bawah 5</h2>
                 <Table>
                     <Table.Head>

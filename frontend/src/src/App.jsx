@@ -4,15 +4,16 @@ import { Flowbite, useThemeMode } from 'flowbite-react'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './index.css'
 import Login from './Pages/Auth/Login'
-import Dashboard from './Pages/Dashboard';
+import Dashboard from './Pages/Home';
 import AddUser from './Pages/Admin/AddUser';
 import ListUser from './Pages/Admin/ListUser';
 import ChangeRole from './Pages/Admin/ChangeRole';
-import UpdatePassword from './Pages/Admin/UpdatePassword';
 import StockIn from './Pages/Stock/StockIn';
 import StockOut from './Pages/Stock/StockOut';
 import ProductList from './Pages/Product/ProductList';
 import SupplierList from './Pages/Supplier/SupplierList';
+import UpdatePassword from './Pages/Setting/UpdatePassword'
+import SupplierAdd from './Pages/Supplier/SupplierAdd';
 
 function App() {
   const mode = useThemeMode()
@@ -27,8 +28,9 @@ function App() {
               <Route path='/administration/add-user' element={<AddUser/>}/>
               <Route path='/administration/list-user' element={<ListUser/>}/>
               <Route path='/administration/change-role' element={<ChangeRole/>}/>
-              <Route path='/administration/update-password' element={<UpdatePassword/>}/>
+              <Route path='/update-password' element={<UpdatePassword/>}/>
               <Route path='/supplier/list' element={<SupplierList/>}/>
+              <Route path='/supplier/add' element={<SupplierAdd/>}/>
               <Route path='/product/list' element={<ProductList/>}/>
               <Route path='/stock/in' element={<StockIn/>}/>
               <Route path='/stock/out' element={<StockOut/>}/>

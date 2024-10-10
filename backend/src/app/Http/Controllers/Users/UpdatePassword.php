@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\Hash;
  *             example=""
  *           ),
  *           @OA\Property(
- *             property="new_password_confirmation",
+ *             property="confirm_password",
  *             type="string",
  *             example=""
  *           )
@@ -61,15 +61,17 @@ class UpdatePassword extends Controller
         $request->validate([
             'current_password' => 'required',
             'new_password' => 'required',
-            'new_password_confirmation' => 'required|same:new_password',
+            'confirm_password' => 'required|same:new_password',
+        ], [
+            'confirm_password.same' => 'confirm password did\'n match'
         ]);
         $dataInput = $request->all();
         $user = $request->user();
         if (!Hash::check($dataInput['current_password'], $user->password)) {
             return response()->json([
-                'status' => 403,
+                'status' => 401,
                 'message' => 'Current Password Incorrect'
-            ], 403);
+            ], 401);
         }
         $user->password = $dataInput['new_password'];
         $user->save();
