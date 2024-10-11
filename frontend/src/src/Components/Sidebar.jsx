@@ -5,28 +5,37 @@ import { PiUserListFill, PiUserSwitchFill } from "react-icons/pi";
 import { FaList, FaUserPlus } from "react-icons/fa6";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { fetchUser } from "../Redux/Features/userSlice";
+import { useEffect, useState } from "react";
 import { FaCartArrowDown, FaCartPlus, FaShop, FaTruck } from "react-icons/fa6";
 import { IoIosSettings } from "react-icons/io";
 import { MdOutlineLibraryAdd } from "react-icons/md";
+import { checkAbility } from "../Config/CheckAbility";
 
 
 const SidebarComponent = () => {
-    const open = useSelector(state => state.sidebar.open)
     const navigate = useNavigate()
+    const [canManageUsers, setCanManageUsers] = useState(false)
+    const [canViewSupplier, setCanViewSupplier] = useState(false);
+    const [canManageSupplier, setCanManageSupplier] = useState(false);
+
+    const open = useSelector(state => state.sidebar.open)
     const dispatch = useDispatch()
-    
-    const user = useSelector(state => state.user.fetchUser.data)
-    
     useEffect(() => {
-        const token = localStorage.getItem('token')
-        if(!token) {
-            navigate('/')
-        } else {
-            dispatch(fetchUser())
+        if(!localStorage.getItem('token')) {
+            navigate('/login')
         }
-    }, [dispatch, navigate])
+        const checkUserAbilities = async () => {
+            const manageUsers = await checkAbility('manage-users')
+            const viewSupplier = await checkAbility('view-suplier');
+            const manageSupplier = await checkAbility('manage-suplier');
+
+            setCanManageUsers(manageUsers);
+            setCanViewSupplier(viewSupplier);
+            setCanManageSupplier(manageSupplier);
+        };
+
+        checkUserAbilities();
+    }, [dispatch, navigate])    
 
     const path = useLocation().pathname
     return (
@@ -41,18 +50,29 @@ const SidebarComponent = () => {
                 <Sidebar.Item href="/dashboard" icon={HiChartPie} active={path === '/dashboard'}>
                     Dashboard
                 </Sidebar.Item>
-                <Sidebar.Collapse icon={RiAdminFill} label="Administration" open={/\/administration\/.*/.test(path)} disabled={user.role !== 'admin'}>
-                    <Sidebar.Item href="/administration/list-user" icon={PiUserListFill} active={path === '/administration/list-user'}>List User</Sidebar.Item>
-                    <Sidebar.Item href="/administration/add-user" icon={FaUserPlus} active={path === '/administration/add-user'}>Add User</Sidebar.Item>
-                    <Sidebar.Item href="/administration/change-role" icon={PiUserSwitchFill} active={path === '/administration/change-role'}>Change Role</Sidebar.Item>
-                </Sidebar.Collapse>
-                <Sidebar.Collapse icon={FaTruck} label="Supplier" open={/\/supplier\/.*/.test(path)}>    
-                    <Sidebar.Item href="/supplier/list" icon={FaList} active={path === '/supplier/list'}>
-                        List Supplier
-                    </Sidebar.Item>    
-                    <Sidebar.Item href="/supplier/add" icon={MdOutlineLibraryAdd} active={path === '/supplier/add'}>
-                        Add Supplier
-                    </Sidebar.Item>
+                {
+                    canManageUsers && (
+                        <Sidebar.Collapse icon={RiAdminFill} label="Administration" open={/\/administration\/.*/.test(path)}>
+                            <Sidebar.Item href="/administration/list-user" icon={PiUserListFill} active={path === '/administration/list-user'}>List User</Sidebar.Item>
+                            <Sidebar.Item href="/administration/add-user" icon={FaUserPlus} active={path === '/administration/add-user'}>Add User</Sidebar.Item>
+                            <Sidebar.Item href="/administration/change-role" icon={PiUserSwitchFill} active={path === '/administration/change-role'} className={`${!canManageUsers ? 'hidden' : ''}`}>Change Role</Sidebar.Item>
+                        </Sidebar.Collapse>
+                    )
+                }
+                <Sidebar.Collapse icon={FaTruck} label="Supplier" open={/\/supplier\/.*/.test(path)}>{
+                    canViewSupplier || canManageSupplier ? (
+                            <Sidebar.Item href="/supplier/list" icon={FaList} active={path === '/supplier/list'}>
+                                List Supplier
+                            </Sidebar.Item>    
+                        ) : (<></>)
+                    }
+                    {
+                        canManageSupplier && (
+                            <Sidebar.Item href="/supplier/add" icon={MdOutlineLibraryAdd} active={path === '/supplier/add'}>
+                                Add Supplier
+                            </Sidebar.Item>
+                        )
+                    }
                 </Sidebar.Collapse>
                 <Sidebar.Item href="/product/list" icon={HiShoppingBag} active={path === '/product/list'}>
                     Products

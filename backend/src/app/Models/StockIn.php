@@ -10,8 +10,8 @@ class StockIn extends Model
     use HasFactory;
     protected $fillable = [
         'product_code',
+        'suplier_code',
         'qty',
-        'suplier_id',
         'date_in'
     ];
 }

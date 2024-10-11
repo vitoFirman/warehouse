@@ -6,6 +6,57 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/ability/check/{ability}": {
+            "get": {
+                "tags": [
+                    "Ability"
+                ],
+                "summary": "Check Ability",
+                "operationId": "e63cc4b5f1dd253341b0529a2f325a16",
+                "parameters": [
+                    {
+                        "name": "ability",
+                        "in": "path",
+                        "description": "ability For User",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Values",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/administration/change-role/{id}": {
             "post": {
                 "tags": [
@@ -521,7 +572,7 @@
                                         "type": "string",
                                         "example": "indomie"
                                     },
-                                    "price": {
+                                    "unite_price": {
                                         "type": "integer",
                                         "example": "3000"
                                     }
@@ -751,8 +802,8 @@
                                         "type": "integer",
                                         "example": "0"
                                     },
-                                    "suplier_id": {
-                                        "type": "integer",
+                                    "supplier_code": {
+                                        "type": "string",
                                         "example": ""
                                     },
                                     "date_in": {
@@ -1058,18 +1109,18 @@
                 ]
             }
         },
-        "/api/suplier/update/{id}": {
+        "/api/suplier/update/{code}": {
             "post": {
                 "tags": [
                     "Suplier"
                 ],
                 "summary": "Update Suplier",
-                "operationId": "b5953561e7a711091d65d5ebe770e85d",
+                "operationId": "22d31ef90c3fdd335c44860fc5ab8d77",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "code",
                         "in": "path",
-                        "description": "id For Suplier",
+                        "description": "code For Suplier",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -1259,6 +1310,10 @@
         }
     },
     "tags": [
+        {
+            "name": "Ability",
+            "description": "Ability"
+        },
         {
             "name": "Administration",
             "description": "Administration"

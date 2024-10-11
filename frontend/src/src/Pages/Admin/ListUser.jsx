@@ -4,7 +4,7 @@ import { FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
 import { HiChartPie } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { userList } from "../../Redux/Features/userSlice";
 import Swal from 'sweetalert2';
 import axios from "axios";
@@ -14,20 +14,13 @@ import { baseUrl } from "../../Config/Axios";
 
 const ListUser = () => {
     const mode = useThemeMode()
-    const navigate = useNavigate()
     const dispatch = useDispatch()
     let users = useSelector(state => state.user.userList.data)
     const loading = useSelector(state => state.user.userList.loading)
 
     useEffect(() => {
-        document.title = 'List User'
-        const token = localStorage.getItem('token')
-        if(!token) {
-            navigate('/')
-        } else {
             dispatch(userList())
-        }
-    }, [dispatch, navigate])
+    }, [dispatch])
 
     const handleDelete = async (id) => {
         Swal.fire({

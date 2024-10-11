@@ -4,6 +4,7 @@ import  productSlice  from "../Features/productSlice";
 import  supllierSlice  from "../Features/suplierSlice";
 import stockSlice from "../Features/stockSlice";
 import setOpenSidebar from "../Features/setOpenSidebar";
+import setOpenModal  from "../Features/setOpenModal";
 
 export default configureStore({
     reducer: {
@@ -11,6 +12,7 @@ export default configureStore({
         product: productSlice,
         supplier: supllierSlice,
         stock: stockSlice,
-        sidebar: setOpenSidebar
+        sidebar: setOpenSidebar,
+        modal: setOpenModal
     }
 })

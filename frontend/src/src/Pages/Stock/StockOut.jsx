@@ -1,27 +1,21 @@
-import { Breadcrumb, Table, Tooltip, useThemeMode } from "flowbite-react"
+import { Breadcrumb, Button, Table, Tooltip, useThemeMode } from "flowbite-react"
 import NavbarComponent from "../../Components/Navbar"
 import { HiChartPie } from "react-icons/hi"
-import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { FaRegEdit, FaRegTrashAlt } from "react-icons/fa"
 import { stockOut } from "../../Redux/Features/stockSlice"
+import { setOpen } from "../../Redux/Features/setOpenModal"
+import ModalAddStockOut from "../../Components/Modal/StockOut/ModalAddStockout"
 
 const ProductList = () => {
     const mode = useThemeMode()
-    const navigate = useNavigate()
     const dispatch = useDispatch()
     let stocks = useSelector(state => state.stock.stockOut.data)
     const loading = useSelector(state => state.stock.stockOut.loading)
     useEffect(() => {
-        document.title = 'Stock Out'
-        const token = localStorage.getItem('token')
-        if(!token) {
-            navigate('/')
-        } else {
-            dispatch(stockOut())
-        }
-    }, [navigate, dispatch])
+        dispatch(stockOut())
+    }, [dispatch])
     return (
         <div className="h-screen md:min-h-screen">
             <NavbarComponent/>
@@ -34,6 +28,7 @@ const ProductList = () => {
                         <Breadcrumb.Item href="#">Stock</Breadcrumb.Item>
                         <Breadcrumb.Item>Out</Breadcrumb.Item>
                     </Breadcrumb>
+                    <Button onClick={() => dispatch(setOpen('addStockOut'))} size={'xs'} color={'blue'} className="my-4">Add Stock Out</Button>
                     <div className="overflow-x-auto">
                         <Table>
                             <Table.Head>
@@ -67,8 +62,8 @@ const ProductList = () => {
                                             <Table.Cell>{stock.date_out}</Table.Cell>
                                             <Table.Cell className="flex gap-5">
                                                 <Tooltip content="Edit" style={mode.mode === 'dark' ? 'light' : 'dark'}>
-                                                    <a href="#" className="font-medium hover:underline text-xl text-green-600 dark:text-green-500">
-                                                        <FaRegEdit className="hover:text-green-400" />
+                                                    <a href="#" className="font-medium hover:underline text-xl text-blue-600 dark:text-blue-500">
+                                                        <FaRegEdit className="hover:text-blue-400" />
                                                     </a>
                                                 </Tooltip>
                                                 <Tooltip content="Delete" style={mode.mode === 'dark' ? 'light' : 'dark'}>
@@ -83,6 +78,7 @@ const ProductList = () => {
                             </Table.Body>
                         </Table>
                         </div>
+                        <ModalAddStockOut/>
                 </div>
             </div>
         </div>

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('supliers', function (Blueprint $table) {
             $table->id();
+            $table->string('code', 10);
             $table->string('name');
             $table->string('contact_person');
             $table->string('phone');

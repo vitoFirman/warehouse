@@ -1,22 +1,13 @@
 import { Breadcrumb, Button, Card, Select, Spinner, TextInput, useThemeMode } from "flowbite-react"
 import NavbarComponent from "../../Components/Navbar"
 import { HiChartPie } from "react-icons/hi"
-import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useState } from "react"
 import axios from "axios"
 import Swal from 'sweetalert2';
 import { baseUrl } from "../../Config/Axios"
 
 
 const AddUser = () => {
-    const navigate = useNavigate()
-    useEffect(() => {
-        document.title = 'Add user'
-        const token = localStorage.getItem('token')
-        if(!token) {
-            navigate('/')
-        }
-    })
     const mode = useThemeMode()
 
     const [loading, setLoading] = useState(false)

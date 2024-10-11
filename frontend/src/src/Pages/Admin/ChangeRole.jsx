@@ -1,32 +1,20 @@
 import { Breadcrumb, Button, Spinner, Table } from "flowbite-react"
 import NavbarComponent from "../../Components/Navbar"
 import { HiChartPie } from "react-icons/hi"
-import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { userList } from "../../Redux/Features/userSlice"
 import ModalChangeRole from "../../Components/Modal/ModalChangeRole"
+import { setOpen } from "../../Redux/Features/setOpenModal"
+import { useState } from "react"
 
 const ChangeRole = () => {
     const dispatch = useDispatch()
     let users = useSelector(state => state.user.userList.data)
     const loading = useSelector(state => state.user.userList.loading)
-    const navigate = useNavigate()
-    useEffect(() => {
-        document.title = 'Change Role'
-        const token = localStorage.getItem('token')
-        if(!token) {
-            navigate('/')
-        } else {
-            dispatch(userList())
-        }
-    }, [navigate, dispatch])
 
     const [userid, setUserid] = useState(null)
-    const [open, setOpen] = useState(false)
 
     const clickModal = (userid) => {
-        setOpen(true)
+        dispatch(setOpen('changeRole'))
         setUserid(userid)
     }
 
@@ -72,9 +60,7 @@ const ChangeRole = () => {
                                                 {user.role}
                                             </Table.Cell>
                                             <Table.Cell>
-                                                <button onClick={() => clickModal(user.id)} className="text-blue-600 dark:text-blue-500 text-2xl">
-                                                    <Button color={'blue'} size={'xs'}>Change</Button>
-                                                </button>
+                                                <Button onClick={() => clickModal(user.id)} color={'blue'} size={'xs'}>Change</Button>
                                             </Table.Cell>
                                         </Table.Row>
                                     ))
@@ -82,7 +68,7 @@ const ChangeRole = () => {
                             }
                         </Table.Body>
                     </Table>
-                        <ModalChangeRole open={open} setOpen={setOpen} userid={userid}/>
+                        <ModalChangeRole userid={userid}/>
                     </div>
                 </div>
             </div>

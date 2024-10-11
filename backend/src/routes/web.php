@@ -9,6 +9,7 @@ include 'profile.php';
 include 'product.php';
 include 'suplier.php';
 include 'stock.php';
+include 'ability.php';
 
 Route::get('/', function () {
     return view('welcome');

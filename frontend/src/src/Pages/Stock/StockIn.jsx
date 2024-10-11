@@ -1,27 +1,21 @@
-import { Breadcrumb, Table, Tooltip, useThemeMode } from "flowbite-react"
+import { Breadcrumb, Button, Table, Tooltip, useThemeMode } from "flowbite-react"
 import NavbarComponent from "../../Components/Navbar"
 import { HiChartPie } from "react-icons/hi"
-import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { FaRegEdit, FaRegTrashAlt } from "react-icons/fa"
 import { stockIn } from "../../Redux/Features/stockSlice"
+import { setOpen } from "../../Redux/Features/setOpenModal"
+import ModalAddStockIn from "../../Components/Modal/ModalAddStockIn"
 
 const ProductList = () => {
     const mode = useThemeMode()
-    const navigate = useNavigate()
     const dispatch = useDispatch()
     let stocks = useSelector(state => state.stock.stockIn.data)
     const loading = useSelector(state => state.stock.stockIn.loading)
     useEffect(() => {
-        document.title = 'Stock In'
-        const token = localStorage.getItem('token')
-        if(!token) {
-            navigate('/')
-        } else {
-            dispatch(stockIn())
-        }
-    }, [navigate, dispatch])
+        dispatch(stockIn())
+    }, [ dispatch])
     return (
         <div className="h-screen md:min-h-screen">
             <NavbarComponent/>
@@ -34,12 +28,13 @@ const ProductList = () => {
                         <Breadcrumb.Item href="#">Stock</Breadcrumb.Item>
                         <Breadcrumb.Item>In</Breadcrumb.Item>
                     </Breadcrumb>
+                    <Button onClick={() => dispatch(setOpen('addStockIn'))} size={'xs'} color={'blue'} className="my-4">Add Stock in</Button>
                     <div className="overflow-x-auto">
                         <Table>
                             <Table.Head>
                             <Table.HeadCell>No</Table.HeadCell>
                             <Table.HeadCell>Product Code</Table.HeadCell>
-                            <Table.HeadCell>Supplier ID</Table.HeadCell>
+                            <Table.HeadCell>Supplier Code</Table.HeadCell>
                             <Table.HeadCell>Quantity</Table.HeadCell>
                             <Table.HeadCell>Date In</Table.HeadCell>
                             <Table.HeadCell>Action</Table.HeadCell>
@@ -64,13 +59,13 @@ const ProductList = () => {
                                                 {index + 1}
                                             </Table.Cell>
                                             <Table.Cell>{stock.product_code}</Table.Cell>
-                                            <Table.Cell>{stock.suplier_id}</Table.Cell>
+                                            <Table.Cell>{stock.suplier_code}</Table.Cell>
                                             <Table.Cell>{stock.qty}</Table.Cell>
                                             <Table.Cell>{stock.date_in}</Table.Cell>
                                             <Table.Cell className="flex gap-5">
                                                 <Tooltip content="Edit" style={mode.mode === 'dark' ? 'light' : 'dark'}>
-                                                    <a href="#" className="font-medium hover:underline text-xl text-green-600 dark:text-green-500">
-                                                        <FaRegEdit className="hover:text-green-400" />
+                                                    <a href="#" className="font-medium hover:underline text-xl text-blue-600 dark:text-blue-500">
+                                                        <FaRegEdit className="hover:text-blue-400" />
                                                     </a>
                                                 </Tooltip>
                                                 <Tooltip content="Delete" style={mode.mode === 'dark' ? 'light' : 'dark'}>
@@ -85,6 +80,7 @@ const ProductList = () => {
                             </Table.Body>
                         </Table>
                         </div>
+                        <ModalAddStockIn/>
                 </div>
             </div>
         </div>

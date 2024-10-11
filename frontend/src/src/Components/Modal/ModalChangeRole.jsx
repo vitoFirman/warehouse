@@ -6,14 +6,16 @@ import { baseUrl } from "../../Config/Axios";
 import Swal from "sweetalert2";
 import { userList } from "../../Redux/Features/userSlice";
 import PropTypes from "prop-types";
+import { setOpen } from "../../Redux/Features/setOpenModal";
 
-function ModalChangeRole({ open, setOpen, userid }) {
+function ModalChangeRole({ userid }) {
     const users = useSelector((state) => state.user.userList.data);
     const user = users.find((user) => user.id === userid);
     const [role, setRole] = useState(user?.role);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const dispatch = useDispatch()
+    const open = useSelector(state => state.modal.open)
 
     useEffect(() => {
         if (user) {
@@ -41,7 +43,7 @@ function ModalChangeRole({ open, setOpen, userid }) {
                     toast.onmouseenter = Swal.stopTimer;
                     toast.onmouseleave = Swal.resumeTimer;
                     dispatch(userList())
-                    setOpen(false)
+                    dispatch(setOpen(null))
                 }
             });
             Toast.fire({
@@ -56,20 +58,20 @@ function ModalChangeRole({ open, setOpen, userid }) {
     };
 
     const handleClose = () => {
-        setOpen(false)
+        dispatch(setOpen(null))
         setError(null)
     }   
 
     return (
     <div>
-        {open && (
+        {open === 'changeRole' && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center w-full h-full overflow-y-auto bg-black bg-opacity-50">
                     <div className="relative p-4 w-full max-w-md max-h-full">
                         <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                             {/* Modal header */}
                             <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                    Create New Product
+                                    Change Role {user.name}
                                 </h3>
                                 <button onClick={() => handleClose()} type="button" className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
                                     <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">

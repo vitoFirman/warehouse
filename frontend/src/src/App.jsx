@@ -14,6 +14,8 @@ import ProductList from './Pages/Product/ProductList';
 import SupplierList from './Pages/Supplier/SupplierList';
 import UpdatePassword from './Pages/Setting/UpdatePassword'
 import SupplierAdd from './Pages/Supplier/SupplierAdd';
+import Administration from './Pages/Admin/Administration';
+import NoAccess from './Pages/NoAccess/NoAccess';
 
 function App() {
   const mode = useThemeMode()
@@ -24,10 +26,13 @@ function App() {
           <Router>
             <Routes>
               <Route path='/' element={<Login/>}/>
+              <Route path='/no-access' element={<NoAccess/>}/>
               <Route path='/dashboard' element={<Dashboard/>}/>
-              <Route path='/administration/add-user' element={<AddUser/>}/>
-              <Route path='/administration/list-user' element={<ListUser/>}/>
-              <Route path='/administration/change-role' element={<ChangeRole/>}/>
+              <Route path="/administration" element={<Administration />}>
+                    <Route path="list-user" element={<ListUser />} />
+                    <Route path="add-user" element={<AddUser />} />
+                    <Route path="change-role" element={<ChangeRole />} />
+              </Route>
               <Route path='/update-password' element={<UpdatePassword/>}/>
               <Route path='/supplier/list' element={<SupplierList/>}/>
               <Route path='/supplier/add' element={<SupplierAdd/>}/>

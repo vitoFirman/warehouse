@@ -7,6 +7,7 @@ import { fetchUser } from "../Redux/Features/userSlice"
 import SidebarComponent from "./Sidebar"
 import { setOpen } from "../Redux/Features/setOpenSidebar"
 import { IoClose, IoMenu } from "react-icons/io5";
+import { baseUrl } from "../Config/Axios"
 
 const NavbarComponent = () => {
   const navigate = useNavigate()
@@ -28,7 +29,7 @@ const NavbarComponent = () => {
   const handleLogout = async () => {
     const token = localStorage.getItem('token')
     try {
-      await axios.post('https://inventory.vito.web.id/api/auth/logout', {}, {
+      await axios.post(`${baseUrl}/auth/logout`, {}, {
         headers: {
           Authorization: `Bearer ${token}`
         }

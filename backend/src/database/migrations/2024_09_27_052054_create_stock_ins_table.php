@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('stock_ins', function (Blueprint $table) {
             $table->id();
             $table->string('product_code');
+            $table->string('suplier_code');
             $table->integer('qty');
-            $table->integer('suplier_id');
             $table->date('date_in');
             $table->timestamps();
         });

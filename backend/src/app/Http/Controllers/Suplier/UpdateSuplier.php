@@ -8,14 +8,14 @@ use Illuminate\Http\Request;
 
 /**
  * @OA\Post(
- *   path="/api/suplier/update/{id}",
+ *   path="/api/suplier/update/{code}",
  *   summary="Update Suplier",
  *   tags={"Suplier"},
  *   security={{"bearerAuth": {}}},
  *   @OA\Parameter(
- *     name="id",
+ *     name="code",
  *     in="path",
- *     description="id For Suplier",
+ *     description="code For Suplier",
  *     required=true,
  *     @OA\Schema(
  *        type="string"
@@ -84,8 +84,8 @@ class UpdateSuplier extends Controller
             'address' => 'required|string',
         ]);
         $dataInput = $request->all();
-        $id = $request->route('id');
-        $suplier = Suplier::where('id', $id)->first();
+        $code = $request->route('code');
+        $suplier = Suplier::where('code', $code)->first();
         $suplier->name = $dataInput['name'];
         $suplier->contact_person = $dataInput['contact_person'];
         $suplier->phone = $dataInput['phone'];

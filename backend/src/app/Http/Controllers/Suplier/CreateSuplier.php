@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Suplier;
 use App\Http\Controllers\Controller;
 use App\Models\Suplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
 
 /**
  * @OA\Post(
@@ -75,7 +77,12 @@ class CreateSuplier extends Controller
             'address' => 'required|string',
         ]);
         $dataInput = $request->all();
+        do {
+            $code = 'S' . strtoupper(Str::random(5));
+            $exists = Suplier::where('code', $code)->first();
+        } while ($exists);
         Suplier::create([
+            'code' => $code,
             'name' => $dataInput['name'],
             'contact_person' => $dataInput['contact_person'],
             'phone' => $dataInput['phone'],

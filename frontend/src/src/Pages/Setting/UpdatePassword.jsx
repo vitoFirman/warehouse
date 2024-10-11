@@ -65,9 +65,6 @@ const UpdatePassword = () => {
             setLoading(false)
         }
     }
-
-    console.log({failed, validationError});
-
     const navigate = useNavigate()
     useEffect(() => {
         document.title = 'Update Password'

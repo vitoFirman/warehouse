@@ -31,8 +31,8 @@ use Illuminate\Http\Request;
  *             example="0"
  *           ),
  *           @OA\Property(
- *             property="suplier_id",
- *             type="integer",
+ *             property="supplier_code",
+ *             type="string",
  *             example=""
  *           ),
  *           @OA\Property(
@@ -66,30 +66,17 @@ class StockIn extends Controller
     public function __invoke(Request $request)
     {
         $request->validate([
-            'product_code' => 'required|string',
+            'product_code' => 'required|string|exists:products,code',
+            'supplier_code' => 'required|string|min:1|exists:supliers,code',
             'qty' => 'required|integer|min:1',
-            'suplier_id' => 'required|integer|min:1|exists:supliers,id',
             'date_in' => 'nullable|date'
         ]);
         $dataInput = $request->all();
         $product = Product::where('code', $dataInput['product_code'])->first();
-        $suplier = Suplier::where('id', $dataInput['suplier_id'])->first();
-        if (!$product) {
-            return response()->json([
-                'status' => 404,
-                'message' => 'Product Code not found'
-            ]);
-        }
-        if (!$suplier) {
-            return response()->json([
-                'status' => 404,
-                'message' => 'Suplier Id not found'
-            ]);
-        }
         $stockIn = ModelsStockIn::create([
             'product_code' => $dataInput['product_code'],
             'qty' => $dataInput['qty'],
-            'suplier_id' => $dataInput['suplier_id'],
+            'suplier_code' => $dataInput['supplier_code'],
             'date_in' => $dataInput['date_in'] ? $dataInput['date_in'] : now()
         ]);
         if ($stockIn) {

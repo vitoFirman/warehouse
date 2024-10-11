@@ -1,27 +1,89 @@
 import { Breadcrumb, Table, Tooltip, useThemeMode } from "flowbite-react"
 import NavbarComponent from "../../Components/Navbar"
 import { HiChartPie } from "react-icons/hi"
-import { useNavigate } from "react-router-dom"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { FaRegEdit, FaRegTrashAlt } from "react-icons/fa"
 import { supplierList } from "../../Redux/Features/suplierSlice"
+import { setOpen } from "../../Redux/Features/setOpenModal"
+import ModalEditSupplier from "../../Components/Modal/ModalEditSupplier"
+import { checkAbility } from "../../Config/CheckAbility"
+// import Swal from "sweetalert2"
+// import axios from "axios"
+// import { baseUrl } from "../../Config/Axios"
 
 const SupplierList = () => {
     const mode = useThemeMode()
-    const navigate = useNavigate()
     const dispatch = useDispatch()
     let supplier = useSelector(state => state.supplier.data)
     const loading = useSelector(state => state.supplier.loading)
+
+    const [canEditSupplier, setCanEditSupplier] = useState(false)
+
     useEffect(() => {
-        document.title = 'Supplier List'
-        const token = localStorage.getItem('token')
-        if(!token) {
-            navigate('/')
-        } else {
-            dispatch(supplierList())
-        }
-    }, [navigate, dispatch])
+        dispatch(supplierList())
+        const checkPermission = async () => {
+            const hasAbility = await checkAbility('manage-suplier'); 
+            setCanEditSupplier(hasAbility)
+        };
+
+        checkPermission();
+    }, [dispatch])
+
+    const [code, setCode] = useState(null)
+
+    const clickModal = (code) => {
+        dispatch(setOpen('editSupplier'))
+        setCode(code)
+    }
+
+    // const handleDelete = async (id) => {
+    //     Swal.fire({
+    //         title: "Are you sure?",
+    //         text: "You won't be able to revert this!",
+    //         icon: "warning",
+    //         width: '320px',
+    //         showCancelButton: true,
+    //         confirmButtonColor: "#3085d6",
+    //         cancelButtonColor: "#d33",
+    //         confirmButtonText: "Yes, delete it!"
+    //     }).then(async (result) => {
+    //         if (result.isConfirmed) {
+    //             const token = localStorage.getItem('token')
+    //                 const res = await axios.delete(`${baseUrl}/administration/user/delete/${id}`, {
+    //                     headers: {
+    //                         Authorization: `Bearer ${token}`
+    //                     }
+    //                 });
+    //                 if(res.data.status === 200) {
+    //                     const Toast = Swal.mixin({
+    //                         toast: true,
+    //                         position: "top-end",
+    //                         showConfirmButton: false,
+    //                         timer: 2000,
+    //                         timerProgressBar: true,
+    //                         didOpen: (toast) => {
+    //                             toast.onmouseenter = Swal.stopTimer;
+    //                             toast.onmouseleave = Swal.resumeTimer;
+    //                             dispatch(supplierList())
+    //                         }
+    //                     })
+    //                     Toast.fire({
+    //                         icon: "success",
+    //                         title: res.data.message,
+    //                         })
+    //                 } else {
+    //                     Swal.fire({
+    //                         title: "Error!",
+    //                         text: res.data.message,
+    //                         icon: "error",
+    //                         width: '320px'
+    //                     });
+    //                 }
+    //         }
+    //     });
+    // };
+    
     return (
         <div className="h-screen md:min-h-screen">
             <NavbarComponent/>
@@ -37,7 +99,8 @@ const SupplierList = () => {
                     <div className="overflow-x-auto">
                         <Table>
                             <Table.Head>
-                            <Table.HeadCell>Id</Table.HeadCell>
+                            <Table.HeadCell>No</Table.HeadCell>
+                            <Table.HeadCell>Code</Table.HeadCell>
                             <Table.HeadCell>Name</Table.HeadCell>
                             <Table.HeadCell>Contact Person</Table.HeadCell>
                             <Table.HeadCell>Phone</Table.HeadCell>
@@ -48,7 +111,7 @@ const SupplierList = () => {
                             <Table.Body className="divide-y">
                                 {loading ? (
                                     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                                        <Table.Cell colSpan={7} className="text-center py-4 text-gray-500 dark:text-gray-400">
+                                        <Table.Cell colSpan={8} className="text-center py-4 text-gray-500 dark:text-gray-400">
                                         <div role="status">
                                             <svg aria-hidden="true" className="inline w-10 h-10 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
@@ -59,22 +122,27 @@ const SupplierList = () => {
                                         </Table.Cell>
                                     </Table.Row>
                                 ) : (
-                                    supplier.map((supplier) => (
+                                    supplier.map((supplier, index) => (
                                         <Table.Row key={supplier.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
                                             <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                                {supplier.id}
+                                                {index + 1}
                                             </Table.Cell>
+                                            <Table.Cell>{supplier.code}</Table.Cell>
                                             <Table.Cell>{supplier.name}</Table.Cell>
                                             <Table.Cell>{supplier.contact_person}</Table.Cell>
                                             <Table.Cell>{supplier.phone}</Table.Cell>
                                             <Table.Cell>{supplier.email}</Table.Cell>
                                             <Table.Cell>{supplier.address}</Table.Cell>
                                             <Table.Cell className="flex gap-5">
-                                                <Tooltip content="Edit" style={mode.mode === 'dark' ? 'light' : 'dark'}>
-                                                    <a href="#" className="font-medium hover:underline text-xl text-green-600 dark:text-green-500">
-                                                        <FaRegEdit className="hover:text-green-400" />
-                                                    </a>
-                                                </Tooltip>
+                                                {
+                                                    canEditSupplier && (
+                                                        <Tooltip content="Edit" style={mode.mode === 'dark' ? 'light' : 'dark'}>
+                                                            <a onClick={() => clickModal(supplier.code)} className="font-medium cursor-pointer hover:underline text-xl text-blue-600 dark:text-blue-500">
+                                                                <FaRegEdit className="hover:text-blue-400" />
+                                                            </a>
+                                                        </Tooltip>
+                                                    )
+                                                }
                                                 <Tooltip content="Delete" style={mode.mode === 'dark' ? 'light' : 'dark'}>
                                                     <a href="#" className="font-medium text-xl text-red-600 dark:text-red-500">
                                                         <FaRegTrashAlt className="hover:text-red-400" />
@@ -87,6 +155,7 @@ const SupplierList = () => {
                             </Table.Body>
                         </Table>
                         </div>
+                        <ModalEditSupplier code={code}/>
                 </div>
             </div>
         </div>

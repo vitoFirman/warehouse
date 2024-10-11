@@ -2,14 +2,13 @@ import { useDispatch, useSelector } from "react-redux";
 import NavbarComponent from "../Components/Navbar"
 import { FaCartArrowDown, FaCartPlus, FaShoppingBag, FaUserTie } from "react-icons/fa";
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { productList } from "../Redux/Features/productSlice";
 import { Button, Table } from "flowbite-react";
 import { stockIn, stockOut } from "../Redux/Features/stockSlice";
 import { supplierList } from "../Redux/Features/suplierSlice";
 
 const Dashboard = () => {
-    const navigate = useNavigate()
     const dispatch = useDispatch()
     const supplier = useSelector(state => state.supplier.data)
     const product = useSelector(state => state.product.data)
@@ -18,17 +17,12 @@ const Dashboard = () => {
     const stockOutList = useSelector(state => state.stock.stockOut.data)
 
     useEffect(() => {
-        document.title = 'Warehouse | Dashboard'
-        const token = localStorage.getItem('token')
-        if(!token) {
-            navigate('/')
-        } else {
-            dispatch(supplierList())
-            dispatch(productList())
-            dispatch(stockIn())
-            dispatch(stockOut())
-        }
-    }, [dispatch, navigate])
+        dispatch(supplierList())
+        dispatch(productList())
+        dispatch(stockIn())
+        dispatch(stockOut())
+        
+    }, [dispatch])
 
     return (
         <div className="min-h-screen">
@@ -38,7 +32,7 @@ const Dashboard = () => {
             <div className="flex flex-col items-center sm:grid sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-4">
                 <a className="block w-full p-6 bg-red-600 hover:bg-red-500 text-white rounded-md">
                     <h5 className="text-2xl mb-5">
-                        USERS
+                        SUPPLIER
                     </h5>
                     <div className="flex flex-row">
                         <small className="text-white text-7xl">

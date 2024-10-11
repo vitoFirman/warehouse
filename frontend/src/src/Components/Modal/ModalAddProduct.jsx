@@ -1,18 +1,20 @@
 import axios from "axios"
 import { Button, Spinner, TextInput, useThemeMode } from "flowbite-react"
 import { useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import Swal from "sweetalert2"
 import { productList } from "../../Redux/Features/productSlice"
 import { baseUrl } from "../../Config/Axios"
 import PropTypes from "prop-types"
+import { setOpen } from "../../Redux/Features/setOpenModal"
 
-function ModalAddProduct({open, setOpen, page}) {
+function ModalAddProduct({page}) {
     const mode = useThemeMode()
     const [name, setName] = useState('')
     const [unite_price, setUnitePrice] = useState('')
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
+    const open = useSelector(state => state.modal.open)
 
     const dispatch = useDispatch()
 
@@ -36,7 +38,7 @@ function ModalAddProduct({open, setOpen, page}) {
                     toast.onmouseenter = Swal.stopTimer;
                     toast.onmouseleave = Swal.resumeTimer;
                     dispatch(productList(page))
-                    setOpen(false)
+                    dispatch(setOpen(null))
                 }
             });
             Toast.fire({
@@ -54,13 +56,14 @@ function ModalAddProduct({open, setOpen, page}) {
     }
 
     const handleClose = () => {
-        setOpen(false)
+        dispatch(setOpen(null))
         setError(null)
     }
+    
 
     return (
         <div>
-            {open && (
+            {open === 'addProduct' && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center w-full h-full overflow-y-auto bg-black bg-opacity-50">
                     <div className="relative p-4 w-full max-w-md max-h-full">
                         <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -82,14 +85,14 @@ function ModalAddProduct({open, setOpen, page}) {
                                         <label htmlFor="name" className={`block mb-2 text-sm font-medium ${error?.errors?.name ? 'text-red-600 ' : mode.mode === 'dark' ? 'text-white' : 'text-black'}`}>
                                             Name
                                         </label>
-                                        <TextInput name="name" value={name} className="" id="name" type="text" onChange={(e) => setName(e.target.value)} color={error?.errors?.name ? 'failure' : 'gray'} />
+                                        <TextInput name="name" value={name} className="" id="name" type="text" onChange={(e) => setName(e.target.value)} color={error?.errors?.name ? 'failure' : 'gray'} autoComplete="off"/>
                                         {error?.errors?.name && <span className="text-red-600 text-xs">{error?.errors?.name[0]}</span>}
                                     </div>
                                     <div className="col-span-2">
                                         <label htmlFor="unite_price" className={`block mb-2 text-sm font-medium ${error?.errors?.unite_price ? 'text-red-600 ' : mode.mode === 'dark' ? 'text-white' : 'text-black'}`}>
                                             Unite price
                                         </label>
-                                        <TextInput name="unite_price" value={unite_price} className="" id="unite_price" type="text" onChange={(e) => setUnitePrice(e.target.value)} color={error?.errors?.unite_price ? 'failure' : 'gray'} />
+                                        <TextInput name="unite_price" value={unite_price} className="" id="unite_price" type="number" onChange={(e) => setUnitePrice(e.target.value)} color={error?.errors?.unite_price ? 'failure' : 'gray'} />
                                         {error?.errors?.unite_price && <span className="text-red-600 text-xs">{error?.errors?.unite_price[0]}</span>}
                                     </div>
                                 </div>

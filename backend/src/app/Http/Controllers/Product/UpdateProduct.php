@@ -33,7 +33,7 @@ use Illuminate\Http\Request;
  *             example="indomie"
  *           ),
  *           @OA\Property(
- *             property="price",
+ *             property="unite_price",
  *             type="integer",
  *             example="3000"
  *           )
@@ -63,17 +63,17 @@ class UpdateProduct extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            'price' => 'required',
+            'unite_price' => 'required',
         ]);
         $dataInput = $request->all();
         $code = $request->route('code');
         $product = Product::where('code', $code)->first();
         $product->name = $dataInput['name'];
-        $product->price = $dataInput['price'];
+        $product->unite_price = $dataInput['unite_price'];
         $product->save();
         return response()->json([
             'status' => 200,
-            'message' => 'Success'
+            'message' => 'Success, Product Updated'
         ]);
     }
 }

@@ -59,7 +59,7 @@ class CreateProduct extends Controller
         ]);
         $dataInput = $request->all();
         do {
-            $code = Str::random(5);
+            $code = 'P' . strtoupper(Str::random(5));
             $exists = Product::where('code', $code)->first();
         } while ($exists);
         Product::create([

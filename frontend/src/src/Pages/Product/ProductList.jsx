@@ -1,16 +1,16 @@
 import { Breadcrumb, Button, Pagination, Table, Tooltip, useThemeMode } from "flowbite-react"
 import NavbarComponent from "../../Components/Navbar"
 import { HiChartPie } from "react-icons/hi"
-import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { productList } from "../../Redux/Features/productSlice"
 import { FaRegEdit, FaRegTrashAlt } from "react-icons/fa"
 import ModalAddProduct from "../../Components/Modal/ModalAddProduct"
+import { setOpen } from "../../Redux/Features/setOpenModal"
+import ModalEditProduct from "../../Components/Modal/ModalEditProduct"
 
 const ProductList = () => {
     const mode = useThemeMode()
-    const navigate = useNavigate()
     const dispatch = useDispatch()
     let product = useSelector(state => state.product.data)
     const loading = useSelector(state => state.product.loading)
@@ -18,14 +18,8 @@ const ProductList = () => {
     const itemsPerPage = product?.per_page
 
     useEffect(() => {
-        document.title = 'Product List'
-        const token = localStorage.getItem('token')
-        if(!token) {
-            navigate('/')
-        } else {
             dispatch(productList(currentPage))
-        }
-    }, [navigate, dispatch, currentPage])
+    }, [dispatch, currentPage])
 
     const onPageChange = (page) => {
         setCurrentPage(page)
@@ -34,7 +28,13 @@ const ProductList = () => {
 
     const startIndex = (currentPage - 1) * itemsPerPage;
 
-    const [open, setOpen] = useState(false)
+    const [code, setCode] = useState(null)
+
+    const clickModal = (code) => {
+        dispatch(setOpen('editProduct'))
+        setCode(code)
+    }
+
     return (
         <div className="min-h-screen">
             <NavbarComponent/>
@@ -48,8 +48,8 @@ const ProductList = () => {
                     <Breadcrumb.Item>List</Breadcrumb.Item>
                 </Breadcrumb>
                 {/* <!-- Modal toggle --> */}
-                <Button onClick={() => setOpen(true)} size={'xs'} color={'blue'} className="my-3">Add Product</Button>
-                <ModalAddProduct open={open} setOpen={setOpen} page={currentPage}/>
+                <Button onClick={() => dispatch(setOpen('addProduct'))} size={'xs'} color={'blue'} className="my-3">Add Product</Button>
+                <ModalAddProduct page={currentPage}/>
                 <div className="overflow-x-auto">
                     <Table>
                         <Table.Head>
@@ -85,8 +85,8 @@ const ProductList = () => {
                                         <Table.Cell>{product.stock}</Table.Cell>
                                         <Table.Cell className="flex gap-5">
                                             <Tooltip content="Edit" style={mode.mode === 'dark' ? 'light' : 'dark'}>
-                                                <a href="#" className="font-medium hover:underline text-xl text-green-600 dark:text-green-500">
-                                                    <FaRegEdit className="hover:text-green-400" />
+                                                <a onClick={() => clickModal(product.code)} className="cursor-pointer font-medium hover:underline text-xl text-blue-600 dark:text-blue-500">
+                                                    <FaRegEdit className="hover:text-blue-400" />
                                                 </a>
                                             </Tooltip>
                                             <Tooltip content="Delete" style={mode.mode === 'dark' ? 'light' : 'dark'}>
@@ -101,6 +101,7 @@ const ProductList = () => {
                         </Table.Body>
                     </Table>
                     </div>
+                    <ModalEditProduct code={code} currentPage={currentPage}/>
                     <div className="flex my-5 overflow-x-auto sm:justify-start">
                         <Pagination currentPage={currentPage} totalPages={product.last_page ? product.last_page : 1} onPageChange={onPageChange} />
                     </div>
