@@ -1,12 +1,13 @@
 import { Breadcrumb, Button, Table, Tooltip, useThemeMode } from "flowbite-react"
 import NavbarComponent from "../../Components/Navbar"
 import { HiChartPie } from "react-icons/hi"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { FaRegEdit, FaRegTrashAlt } from "react-icons/fa"
 import { stockOut } from "../../Redux/Features/stockSlice"
 import { setOpen } from "../../Redux/Features/setOpenModal"
 import ModalAddStockOut from "../../Components/Modal/StockOut/ModalAddStockout"
+import { FaRegEdit } from "react-icons/fa"
+import ModalEditStockOut from "../../Components/Modal/StockOut/ModalEditStockOut"
 
 const ProductList = () => {
     const mode = useThemeMode()
@@ -16,8 +17,15 @@ const ProductList = () => {
     useEffect(() => {
         dispatch(stockOut())
     }, [dispatch])
+
+    const [id, setId] = useState(null)
+
+    const clickModal = (id) => {
+        dispatch(setOpen('editStockOut'))
+        setId(id)
+    }
     return (
-        <div className="h-screen md:min-h-screen">
+        <div className="min-h-screen pb-5">
             <NavbarComponent/>
             <div className="p-4 sm:ml-64">
                 <div className="mt-20">
@@ -33,6 +41,7 @@ const ProductList = () => {
                         <Table>
                             <Table.Head>
                             <Table.HeadCell>No</Table.HeadCell>
+                            <Table.HeadCell>Product Name</Table.HeadCell>
                             <Table.HeadCell>Product Code</Table.HeadCell>
                             <Table.HeadCell>Quantity</Table.HeadCell>
                             <Table.HeadCell>Date Out</Table.HeadCell>
@@ -41,7 +50,7 @@ const ProductList = () => {
                             <Table.Body className="divide-y">
                                 {loading ? (
                                     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                                        <Table.Cell colSpan={5} className="text-center py-4 text-gray-500 dark:text-gray-400">
+                                        <Table.Cell colSpan={6} className="text-center py-4 text-gray-500 dark:text-gray-400">
                                         <div role="status">
                                             <svg aria-hidden="true" className="inline w-10 h-10 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
@@ -57,18 +66,14 @@ const ProductList = () => {
                                             <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                                 {index + 1}
                                             </Table.Cell>
+                                            <Table.Cell>{stock.product?.name ?? 'product has been deleted'}</Table.Cell>
                                             <Table.Cell>{stock.product_code}</Table.Cell>
                                             <Table.Cell>{stock.qty}</Table.Cell>
                                             <Table.Cell>{stock.date_out}</Table.Cell>
                                             <Table.Cell className="flex gap-5">
                                                 <Tooltip content="Edit" style={mode.mode === 'dark' ? 'light' : 'dark'}>
-                                                    <a href="#" className="font-medium hover:underline text-xl text-blue-600 dark:text-blue-500">
+                                                    <a onClick={() => clickModal(stock.id)} className="cursor-pointer font-medium hover:underline text-xl text-blue-600 dark:text-blue-500">
                                                         <FaRegEdit className="hover:text-blue-400" />
-                                                    </a>
-                                                </Tooltip>
-                                                <Tooltip content="Delete" style={mode.mode === 'dark' ? 'light' : 'dark'}>
-                                                    <a href="#" className="font-medium text-xl text-red-600 dark:text-red-500">
-                                                        <FaRegTrashAlt className="hover:text-red-400" />
                                                     </a>
                                                 </Tooltip>
                                             </Table.Cell>
@@ -79,6 +84,7 @@ const ProductList = () => {
                         </Table>
                         </div>
                         <ModalAddStockOut/>
+                        <ModalEditStockOut id={id}/>
                 </div>
             </div>
         </div>

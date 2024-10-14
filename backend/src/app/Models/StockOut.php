@@ -13,4 +13,10 @@ class StockOut extends Model
         'qty',
         'date_out'
     ];
+
+    // Menghubungkan dengan model Product berdasarkan product_code
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_code', 'code'); // 'code' adalah kolom di tabel products
+    }
 }

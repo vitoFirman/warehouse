@@ -10,6 +10,7 @@ include 'product.php';
 include 'suplier.php';
 include 'stock.php';
 include 'ability.php';
+include 'reports.php';
 
 Route::get('/', function () {
     return view('welcome');

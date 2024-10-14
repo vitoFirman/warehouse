@@ -7,7 +7,7 @@ use App\Models\Suplier;
 use Illuminate\Http\Request;
 
 /**
- * @OA\Post(
+ * @OA\Put(
  *   path="/api/suplier/update/{code}",
  *   summary="Update Suplier",
  *   tags={"Suplier"},
@@ -94,7 +94,7 @@ class UpdateSuplier extends Controller
         $suplier->save();
         return response()->json([
             'status' => 200,
-            'message' => 'Success'
+            'message' => 'Success, Supplier Updated'
         ]);
     }
 }

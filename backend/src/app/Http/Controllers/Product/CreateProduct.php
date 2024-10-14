@@ -64,7 +64,7 @@ class CreateProduct extends Controller
         } while ($exists);
         Product::create([
             'code' => $code,
-            'name' => $dataInput['name'],
+            'name' => strtolower($dataInput['name']),
             'unite_price' => $dataInput['unite_price'],
             'stock' => 0
         ]);

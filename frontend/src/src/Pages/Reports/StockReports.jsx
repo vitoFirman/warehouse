@@ -1,32 +1,28 @@
-import { Breadcrumb, Button, Table, Tooltip, useThemeMode } from "flowbite-react"
+import { Breadcrumb, Select, Table } from "flowbite-react"
 import NavbarComponent from "../../Components/Navbar"
 import { HiChartPie } from "react-icons/hi"
-import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { stockIn } from "../../Redux/Features/stockSlice"
-import { setOpen } from "../../Redux/Features/setOpenModal"
-import ModalAddStockIn from "../../Components/Modal/ModalAddStockIn"
-import { FaRegEdit } from "react-icons/fa"
-import ModalEditStockIn from "../../Components/Modal/StockIn/ModalEditStockIn"
+import { useEffect, useState } from "react"
+import { reportsStockList } from "../../Redux/Features/reportsStockSlice"
 
-const ProductList = () => {
-    const mode = useThemeMode()
+const StockReports = () => {
     const dispatch = useDispatch()
-    let stocks = useSelector(state => state.stock.stockIn.data)
-    const loading = useSelector(state => state.stock.stockIn.loading)
+    const reports = useSelector(state => state.reportsStock.data)
+    const loading = useSelector(state => state.reportsStock.loading)
+    const [month, setMonth] = useState('this-month')
+
     useEffect(() => {
-        dispatch(stockIn())
-    }, [ dispatch])
+        dispatch(reportsStockList(month))
+    }, [dispatch, month])
 
-    const [id, setId] = useState(null)
-
-    const clickModal = (id) => {
-        dispatch(setOpen('editStockIn'))
-        setId(id)
+    const handleChange = (e) => {
+        const value = e.target.value
+        setMonth(value)
+        dispatch(reportsStockList(value))
     }
-
+    
     return (
-        <div className="min-h-screen pb-5">
+        <div className="min-h-screen">
             <NavbarComponent/>
             <div className="p-4 sm:ml-64">
                 <div className="mt-20">
@@ -35,20 +31,24 @@ const ProductList = () => {
                             Dashboard
                         </Breadcrumb.Item>
                         <Breadcrumb.Item href="#">Stock</Breadcrumb.Item>
-                        <Breadcrumb.Item>In</Breadcrumb.Item>
+                        <Breadcrumb.Item>Reports</Breadcrumb.Item>
                     </Breadcrumb>
-                    <Button onClick={() => dispatch(setOpen('addStockIn'))} size={'xs'} color={'blue'} className="my-4">Add Stock in</Button>
+                    <p className="dark:text-white md:text-xl">Reports Stock {month === 'this-month' ? 'This Month' : 'Previous Month'}</p>
+                    <Select className="w-max my-4" onChange={handleChange}>
+                        <option value="this-month">This Month</option>
+                        <option value="previous-month">Previous Month</option>
+                    </Select>
                     <div className="overflow-x-auto">
                         <Table>
                             <Table.Head>
                             <Table.HeadCell>No</Table.HeadCell>
-                            <Table.HeadCell>Product Name</Table.HeadCell>
                             <Table.HeadCell>Product Code</Table.HeadCell>
-                            <Table.HeadCell>Supplier Name</Table.HeadCell>
-                            <Table.HeadCell>Supplier Code</Table.HeadCell>
-                            <Table.HeadCell>Quantity</Table.HeadCell>
-                            <Table.HeadCell>Date In</Table.HeadCell>
-                            <Table.HeadCell>Action</Table.HeadCell>
+                            <Table.HeadCell>Product Name</Table.HeadCell>
+                            <Table.HeadCell>Initial Stock</Table.HeadCell>
+                            <Table.HeadCell>Stock In</Table.HeadCell>
+                            <Table.HeadCell>Stock Out</Table.HeadCell>
+                            <Table.HeadCell>Unit Price</Table.HeadCell>
+                            <Table.HeadCell>Final Stock</Table.HeadCell>
                             </Table.Head>
                             <Table.Body className="divide-y">
                                 {loading ? (
@@ -64,36 +64,28 @@ const ProductList = () => {
                                         </Table.Cell>
                                     </Table.Row>
                                 ) : (
-                                    stocks.map((stock, index) => (
-                                        <Table.Row key={stock.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                                    Object.values(reports).map((report, index) => report.product_name !== 'N/A' && (
+                                        <Table.Row key={report.product_code} className="bg-white dark:border-gray-700 dark:bg-gray-800">
                                             <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                                 {index + 1}
                                             </Table.Cell>
-                                            <Table.Cell>{stock.product?.name ?? 'product has been deleted'}</Table.Cell>
-                                            <Table.Cell>{stock.product_code}</Table.Cell>
-                                            <Table.Cell>{stock.supplier?.name ?? 'suplier has been deleted'}</Table.Cell>
-                                            <Table.Cell>{stock.suplier_code}</Table.Cell>
-                                            <Table.Cell>{stock.qty}</Table.Cell>
-                                            <Table.Cell>{stock.date_in}</Table.Cell>
-                                            <Table.Cell className="flex gap-5">
-                                                <Tooltip content="Edit" style={mode.mode === 'dark' ? 'light' : 'dark'}>
-                                                    <a onClick={() => clickModal(stock.id)} className="cursor-pointer font-medium hover:underline text-xl text-blue-600 dark:text-blue-500">
-                                                        <FaRegEdit className="hover:text-blue-400" />
-                                                    </a>
-                                                </Tooltip>
-                                            </Table.Cell>
+                                            <Table.Cell>{report.product_code}</Table.Cell>
+                                            <Table.Cell>{report.product_name}</Table.Cell>
+                                            <Table.Cell>{report.initial_stock}</Table.Cell>
+                                            <Table.Cell>{report.stock_in}</Table.Cell>
+                                            <Table.Cell>{report.stock_out}</Table.Cell>
+                                            <Table.Cell>{report.unit_price}</Table.Cell>
+                                            <Table.Cell>{report.final_stock}</Table.Cell>
                                         </Table.Row>
                                     ))
                                 )}
                             </Table.Body>
                         </Table>
                         </div>
-                        <ModalAddStockIn/>
-                        <ModalEditStockIn id={id}/>
                 </div>
             </div>
         </div>
     )
 }
 
-export default ProductList
+export default StockReports

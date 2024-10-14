@@ -8,6 +8,9 @@ import { FaRegEdit, FaRegTrashAlt } from "react-icons/fa"
 import ModalAddProduct from "../../Components/Modal/ModalAddProduct"
 import { setOpen } from "../../Redux/Features/setOpenModal"
 import ModalEditProduct from "../../Components/Modal/ModalEditProduct"
+import Swal from "sweetalert2"
+import axios from "axios"
+import { baseUrl } from "../../Config/Axios"
 
 const ProductList = () => {
     const mode = useThemeMode()
@@ -34,6 +37,53 @@ const ProductList = () => {
         dispatch(setOpen('editProduct'))
         setCode(code)
     }
+
+    const handleDelete = async (code) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            width: '320px',
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const token = localStorage.getItem('token')
+                    const res = await axios.delete(`${baseUrl}/product/delete/${code}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    });
+                    if(res.data.status === 200) {
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 2000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                                dispatch(productList(currentPage))
+                            }
+                        })
+                        Toast.fire({
+                            icon: "success",
+                            title: res.data.message,
+                            })
+                    } else {
+                        Swal.fire({
+                            title: "Error!",
+                            text: res.data.message,
+                            icon: "error",
+                            width: '320px'
+                        });
+                    }
+            }
+        });
+    };
 
     return (
         <div className="min-h-screen">
@@ -90,7 +140,7 @@ const ProductList = () => {
                                                 </a>
                                             </Tooltip>
                                             <Tooltip content="Delete" style={mode.mode === 'dark' ? 'light' : 'dark'}>
-                                                <a href="#" className="font-medium text-xl text-red-600 dark:text-red-500">
+                                                <a onClick={() => handleDelete(product.code)} className="cursor-pointer font-medium text-xl text-red-600 dark:text-red-500">
                                                     <FaRegTrashAlt className="hover:text-red-400" />
                                                 </a>
                                             </Tooltip>

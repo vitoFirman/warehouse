@@ -50,9 +50,9 @@ const Login = () => {
         <section className="min-h-screen" style={style}>
             <div className="flex justify-center px-4">
                 <Card className="mt-20 w-full md:max-w-max">
-                    <a href="https://flowbite.com/" className="flex items-center justify-center space-x-3 rtl:space-x-reverse my-3">
+                    <a href="" className="flex items-center justify-center space-x-3 rtl:space-x-reverse my-3">
                         <img src="https://flowbite.com/docs/images/logo.svg" className="h-10 w-10 md:h-14 md:w-14" alt="Flowbite Logo" />
-                        <span className="self-center text-3xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
+                        <span className="self-center text-3xl font-semibold whitespace-nowrap dark:text-white">MyInventory</span>
                     </a>
                     {/* <p className={`text-lg font-light md:text-2xl mb-3 ${mode.mode === 'dark' ? 'text-white' : 'text-black'}`}>Sign In To Your Account</p> */}
                     {

@@ -4,12 +4,17 @@ import { HiChartPie } from "react-icons/hi"
 import { useDispatch, useSelector } from "react-redux"
 import ModalChangeRole from "../../Components/Modal/ModalChangeRole"
 import { setOpen } from "../../Redux/Features/setOpenModal"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { userList } from "../../Redux/Features/userSlice"
 
 const ChangeRole = () => {
     const dispatch = useDispatch()
     let users = useSelector(state => state.user.userList.data)
     const loading = useSelector(state => state.user.userList.loading)
+
+    useEffect(() => {
+        dispatch(userList())
+    }, [dispatch])
 
     const [userid, setUserid] = useState(null)
 

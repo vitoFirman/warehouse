@@ -33,7 +33,7 @@ class StockOutList extends Controller
 {
     public function __invoke()
     {
-        $stock = StockOut::all();
+        $stock = StockOut::with(['product:code,name'])->get();
         return $stock;
     }
 }

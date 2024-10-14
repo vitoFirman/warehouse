@@ -83,7 +83,7 @@ class CreateSuplier extends Controller
         } while ($exists);
         Suplier::create([
             'code' => $code,
-            'name' => $dataInput['name'],
+            'name' => strtolower($dataInput['name']),
             'contact_person' => $dataInput['contact_person'],
             'phone' => $dataInput['phone'],
             'email' => $dataInput['email'],

@@ -50,7 +50,7 @@ const ModalEditSupplier = ({code}) => {
         setLoading(true)
         try {
             const token = localStorage.getItem('token')
-            const res = await axios.post(`${baseUrl}/suplier/update/${code}`, formData, {
+            const res = await axios.put(`${baseUrl}/suplier/update/${code}`, formData, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

@@ -20,7 +20,7 @@ use Illuminate\Http\Request;
  *         mediaType="application/json",
  *         @OA\Schema(
  *           @OA\Property(
- *             property="product_code",
+ *             property="product_name",
  *             type="string",
  *             example=""
  *           ),
@@ -60,26 +60,20 @@ class StockOut extends Controller
     public function __invoke(Request $request)
     {
         $request->validate([
-            'product_code' => 'required|string',
+            'product_name' => 'required|string|exists:products,name',
             'qty' => 'required|integer|min:1',
             'date_out' => 'nullable|date'
         ]);
         $dataInput = $request->all();
-        $product = Product::where('code', $dataInput['product_code'])->first();
-        if (!$product) {
-            return response()->json([
-                'status' => 404,
-                'message' => 'Product Code not found'
-            ]);
-        }
+        $product = Product::where('name', strtolower($dataInput['product_name']))->first();
         if ($dataInput['qty'] > $product->stock) {
             return response()->json([
                 'status' => 403,
-                'message' => 'qty exceeds stock product'
-            ]);
+                'message' => 'the quantity of stock out exceeded for this product'
+            ], 403);
         }
         $stockOut = ModelsStockOut::create([
-            'product_code' => $dataInput['product_code'],
+            'product_code' => $product->code,
             'qty' => $dataInput['qty'],
             'date_out' => $dataInput['date_out'] ?? now(),
         ]);

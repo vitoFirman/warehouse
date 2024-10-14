@@ -463,6 +463,57 @@
                 ]
             }
         },
+        "/api/product/delete/{code}": {
+            "delete": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Delete Product",
+                "operationId": "c88282a286106aa33f5f5c67c6fda119",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "path",
+                        "description": "Code For Product",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Values",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/product/list": {
             "get": {
                 "tags": [
@@ -780,6 +831,57 @@
                 ]
             }
         },
+        "/api/reports/stock/{month}": {
+            "get": {
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Stock Reports",
+                "operationId": "3b55bbe8e9d6d31974190a7357239110",
+                "parameters": [
+                    {
+                        "name": "month",
+                        "in": "path",
+                        "description": "input the param this-month or previous-month",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Values",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/stock/in": {
             "post": {
                 "tags": [
@@ -794,7 +896,7 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "product_code": {
+                                    "product_name": {
                                         "type": "string",
                                         "example": ""
                                     },
@@ -802,7 +904,7 @@
                                         "type": "integer",
                                         "example": "0"
                                     },
-                                    "supplier_code": {
+                                    "supplier_name": {
                                         "type": "string",
                                         "example": ""
                                     },
@@ -890,6 +992,87 @@
                 ]
             }
         },
+        "/api/stock/in/update/{id}": {
+            "put": {
+                "tags": [
+                    "Stock"
+                ],
+                "summary": "Update Stock In",
+                "operationId": "cf761ebb5d841a6eb3bdc75511806641",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id For Stock In",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "All Request Body For Stock In",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "product_name": {
+                                        "type": "string",
+                                        "example": ""
+                                    },
+                                    "supplier_name": {
+                                        "type": "string",
+                                        "example": ""
+                                    },
+                                    "qty": {
+                                        "type": "integer",
+                                        "example": "0"
+                                    },
+                                    "date_in": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2024-09-26"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success Updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Values",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/stock/out": {
             "post": {
                 "tags": [
@@ -904,7 +1087,7 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "product_code": {
+                                    "product_name": {
                                         "type": "string",
                                         "example": ""
                                     },
@@ -966,6 +1149,83 @@
                 "responses": {
                     "200": {
                         "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Values",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/stock/out/update/{id}": {
+            "put": {
+                "tags": [
+                    "Stock"
+                ],
+                "summary": "Update Stock Out",
+                "operationId": "360e03f454cdc0f0789f68f819582c66",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id For Stock Out",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "All Request Body For Stock Out",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "product_name": {
+                                        "type": "string",
+                                        "example": ""
+                                    },
+                                    "qty": {
+                                        "type": "integer",
+                                        "example": "0"
+                                    },
+                                    "date_out": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2024-09-26"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success Updated",
                         "content": {
                             "application/json": {
                                 "schema": {}
@@ -1069,6 +1329,57 @@
                 ]
             }
         },
+        "/api/suplier/delete/{code}": {
+            "delete": {
+                "tags": [
+                    "Suplier"
+                ],
+                "summary": "Delete Suplier",
+                "operationId": "2cb4e173c2f7fba46a6f3ddb99d3f48f",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "path",
+                        "description": "Code For Suplier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Values",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/suplier/list": {
             "get": {
                 "tags": [
@@ -1110,12 +1421,12 @@
             }
         },
         "/api/suplier/update/{code}": {
-            "post": {
+            "put": {
                 "tags": [
                     "Suplier"
                 ],
                 "summary": "Update Suplier",
-                "operationId": "22d31ef90c3fdd335c44860fc5ab8d77",
+                "operationId": "430e883648c76325bcbefdcfbe3e2887",
                 "parameters": [
                     {
                         "name": "code",
@@ -1329,6 +1640,10 @@
         {
             "name": "Profile",
             "description": "Profile"
+        },
+        {
+            "name": "Reports",
+            "description": "Reports"
         },
         {
             "name": "Stock",

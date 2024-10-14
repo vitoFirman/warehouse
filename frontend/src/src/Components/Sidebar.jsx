@@ -10,6 +10,7 @@ import { FaCartArrowDown, FaCartPlus, FaShop, FaTruck } from "react-icons/fa6";
 import { IoIosSettings } from "react-icons/io";
 import { MdOutlineLibraryAdd } from "react-icons/md";
 import { checkAbility } from "../Config/CheckAbility";
+import { TbReport } from "react-icons/tb";
 
 
 const SidebarComponent = () => {
@@ -81,6 +82,9 @@ const SidebarComponent = () => {
                     <Sidebar.Item href="/stock/in" icon={FaCartPlus} active={path === '/stock/in'}>Stock In</Sidebar.Item>
                     <Sidebar.Item href="/stock/out" icon={FaCartArrowDown} active={path === '/stock/out'}>Stock Out</Sidebar.Item>
                 </Sidebar.Collapse>
+                <Sidebar.Item href="/reports/stock" icon={TbReport} active={path === '/reports/stock'}>
+                    Stock Reports
+                </Sidebar.Item>
                 <Sidebar.Item href="/update-password" icon={IoIosSettings} active={path === '/update-password'}>
                     Settings
                 </Sidebar.Item>

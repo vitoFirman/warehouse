@@ -16,4 +16,9 @@ class Suplier extends Model
         'email',
         'address'
     ];
+
+    public function stockIns()
+    {
+        return $this->hasMany(StockIn::class, 'supplier_code', 'code'); // 'code' adalah kolom di tabel stock_ins
+    }
 }

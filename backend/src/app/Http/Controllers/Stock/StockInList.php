@@ -32,7 +32,7 @@ class StockInList extends Controller
 {
     public function __invoke()
     {
-        $stock = StockIn::all();
+        $stock = StockIn::with(['product:code,name', 'supplier:code,name'])->get();
         return $stock;
     }
 }

@@ -71,7 +71,7 @@ const ListUser = () => {
     
 
     return (
-        <div className="h-screen md:min-h-screen">
+        <div className="min-h-screen">
             <NavbarComponent/>
             <div className="p-4 sm:ml-64">
                 <div className="mt-20">

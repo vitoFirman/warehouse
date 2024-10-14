@@ -8,9 +8,9 @@ import { supplierList } from "../../Redux/Features/suplierSlice"
 import { setOpen } from "../../Redux/Features/setOpenModal"
 import ModalEditSupplier from "../../Components/Modal/ModalEditSupplier"
 import { checkAbility } from "../../Config/CheckAbility"
-// import Swal from "sweetalert2"
-// import axios from "axios"
-// import { baseUrl } from "../../Config/Axios"
+import Swal from "sweetalert2"
+import axios from "axios"
+import { baseUrl } from "../../Config/Axios"
 
 const SupplierList = () => {
     const mode = useThemeMode()
@@ -18,13 +18,13 @@ const SupplierList = () => {
     let supplier = useSelector(state => state.supplier.data)
     const loading = useSelector(state => state.supplier.loading)
 
-    const [canEditSupplier, setCanEditSupplier] = useState(false)
+    const [canManageSupplier, setCanManageSupplier] = useState(false)
 
     useEffect(() => {
         dispatch(supplierList())
         const checkPermission = async () => {
             const hasAbility = await checkAbility('manage-suplier'); 
-            setCanEditSupplier(hasAbility)
+            setCanManageSupplier(hasAbility)
         };
 
         checkPermission();
@@ -37,52 +37,52 @@ const SupplierList = () => {
         setCode(code)
     }
 
-    // const handleDelete = async (id) => {
-    //     Swal.fire({
-    //         title: "Are you sure?",
-    //         text: "You won't be able to revert this!",
-    //         icon: "warning",
-    //         width: '320px',
-    //         showCancelButton: true,
-    //         confirmButtonColor: "#3085d6",
-    //         cancelButtonColor: "#d33",
-    //         confirmButtonText: "Yes, delete it!"
-    //     }).then(async (result) => {
-    //         if (result.isConfirmed) {
-    //             const token = localStorage.getItem('token')
-    //                 const res = await axios.delete(`${baseUrl}/administration/user/delete/${id}`, {
-    //                     headers: {
-    //                         Authorization: `Bearer ${token}`
-    //                     }
-    //                 });
-    //                 if(res.data.status === 200) {
-    //                     const Toast = Swal.mixin({
-    //                         toast: true,
-    //                         position: "top-end",
-    //                         showConfirmButton: false,
-    //                         timer: 2000,
-    //                         timerProgressBar: true,
-    //                         didOpen: (toast) => {
-    //                             toast.onmouseenter = Swal.stopTimer;
-    //                             toast.onmouseleave = Swal.resumeTimer;
-    //                             dispatch(supplierList())
-    //                         }
-    //                     })
-    //                     Toast.fire({
-    //                         icon: "success",
-    //                         title: res.data.message,
-    //                         })
-    //                 } else {
-    //                     Swal.fire({
-    //                         title: "Error!",
-    //                         text: res.data.message,
-    //                         icon: "error",
-    //                         width: '320px'
-    //                     });
-    //                 }
-    //         }
-    //     });
-    // };
+    const handleDelete = async (code) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            width: '320px',
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const token = localStorage.getItem('token')
+                    const res = await axios.delete(`${baseUrl}/suplier/delete/${code}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    });
+                    if(res.data.status === 200) {
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 2000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                                dispatch(supplierList())
+                            }
+                        })
+                        Toast.fire({
+                            icon: "success",
+                            title: res.data.message,
+                            })
+                    } else {
+                        Swal.fire({
+                            title: "Error!",
+                            text: res.data.message,
+                            icon: "error",
+                            width: '320px'
+                        });
+                    }
+            }
+        });
+    };
     
     return (
         <div className="h-screen md:min-h-screen">
@@ -106,7 +106,11 @@ const SupplierList = () => {
                             <Table.HeadCell>Phone</Table.HeadCell>
                             <Table.HeadCell>Email</Table.HeadCell>
                             <Table.HeadCell>Address</Table.HeadCell>
-                            <Table.HeadCell>Action</Table.HeadCell>
+                            {
+                                canManageSupplier && (
+                                    <Table.HeadCell>Action</Table.HeadCell>
+                                )
+                            }
                             </Table.Head>
                             <Table.Body className="divide-y">
                                 {loading ? (
@@ -133,22 +137,22 @@ const SupplierList = () => {
                                             <Table.Cell>{supplier.phone}</Table.Cell>
                                             <Table.Cell>{supplier.email}</Table.Cell>
                                             <Table.Cell>{supplier.address}</Table.Cell>
-                                            <Table.Cell className="flex gap-5">
-                                                {
-                                                    canEditSupplier && (
-                                                        <Tooltip content="Edit" style={mode.mode === 'dark' ? 'light' : 'dark'}>
-                                                            <a onClick={() => clickModal(supplier.code)} className="font-medium cursor-pointer hover:underline text-xl text-blue-600 dark:text-blue-500">
-                                                                <FaRegEdit className="hover:text-blue-400" />
-                                                            </a>
-                                                        </Tooltip>
-                                                    )
-                                                }
-                                                <Tooltip content="Delete" style={mode.mode === 'dark' ? 'light' : 'dark'}>
-                                                    <a href="#" className="font-medium text-xl text-red-600 dark:text-red-500">
-                                                        <FaRegTrashAlt className="hover:text-red-400" />
-                                                    </a>
-                                                </Tooltip>
-                                            </Table.Cell>
+                                            {
+                                                canManageSupplier && (
+                                                <Table.Cell className="flex gap-5">
+                                                            <Tooltip content="Edit" style={mode.mode === 'dark' ? 'light' : 'dark'}>
+                                                                <a onClick={() => clickModal(supplier.code)} className="font-medium cursor-pointer hover:underline text-xl text-blue-600 dark:text-blue-500">
+                                                                    <FaRegEdit className="hover:text-blue-400" />
+                                                                </a>
+                                                            </Tooltip>
+                                                            <Tooltip content="Delete" style={mode.mode === 'dark' ? 'light' : 'dark'}>
+                                                                <a onClick={() => handleDelete(supplier.code)} className="cursor-pointer font-medium text-xl text-red-600 dark:text-red-500">
+                                                                    <FaRegTrashAlt className="hover:text-red-400" />
+                                                                </a>
+                                                            </Tooltip>
+                                                </Table.Cell>
+                                                )
+                                            }
                                         </Table.Row>
                                     ))
                                 )}

@@ -16,6 +16,7 @@ import UpdatePassword from './Pages/Setting/UpdatePassword'
 import SupplierAdd from './Pages/Supplier/SupplierAdd';
 import Administration from './Pages/Admin/Administration';
 import NoAccess from './Pages/NoAccess/NoAccess';
+import StockReports from './Pages/Reports/StockReports';
 
 function App() {
   const mode = useThemeMode()
@@ -39,6 +40,7 @@ function App() {
               <Route path='/product/list' element={<ProductList/>}/>
               <Route path='/stock/in' element={<StockIn/>}/>
               <Route path='/stock/out' element={<StockOut/>}/>
+              <Route path='/reports/stock' element={<StockReports/>}/>
             </Routes>
           </Router>
         </div>
